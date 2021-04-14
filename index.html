@@ -5,11 +5,44 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" integrity="sha512-5fsy+3xG8N/1PV5MIJz9ZsWpkltijBI48gBzQ/Z2eVATePGHOkMIn+xTDHIfTZFVb9GMpflF2wOWItqxAP2oLQ==" crossorigin="anonymous" />
+    <script src="https://kit.fontawesome.com/3a539c28be.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
     <title>commitCanvas</title>
 </head>
 <body>
-    <h1>commitCanvas</h1>
+    <!-- help bar -->
+    <header>
+        <div>
+            <a href="#">help <i class="far fa-question-circle"></i></a>
+        </div>
+    </header>
+
+    <!-- main body -->
+    <main>
+        <h1>commitCanvas</h1>
+        <h5>an interactive tool that helps you create art within you own Github contribution graph</h5>
+        <form>
+            <div class="row">
+                <div class="u-full-width flex-form">
+                    <label for="custom-message">art goes here</label>
+                    <input class="u-full-width" type="text" placeholder="message / letterArt / pattern / symbol">
+                    <input class="button-primary" type="submit" value="Submit">
+                </div>
+            </div>
+        </form>
+        <div id="contribution-graph">
+            <div class="commit"></div>
+
+        </div>
+        <a href="#">advanced <i class="fas fa-caret-down"></i></a>
+        <div id="schedule-output">
+            
+        </div>
+    </main>
+
+    <footer>
+    
+    </footer>
 
     <script src="app.js"></script>
 </body>
