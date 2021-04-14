@@ -1,70 +1,75 @@
-body {
-    height: 100vh;
-
-    border-color: #888;
-    border-style: solid;
-}
-
+/* global styling */
 a {
     text-decoration: none;
 }
 
 
-/* help bar */
-header {
-    display: flex;
-    justify-content: flex-end;
-
-    padding-right: .5em;
+/* flex layout */
+body {
+    height: 100vh;
+    margin: auto;
 
     border-color: goldenrod;
     border-style: solid;
 }
+.container {
+    width: 80%;
 
-
-/* main body */
-main {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-
-    border-color: black;
-    border-style: solid;
-    text-align: center;
 }
-
-h1 {
-    color: rgb(144, 230, 158);
-}
-
-/* form */
 input {
     text-align: center;
 }
-
+.flex-header {
+    display: flex;
+    justify-content: flex-end;
+}
 .flex-form {
+    width: 60%;
+
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* contribution graph */
+
+#title {
+    color: rgb(144, 230, 158);
+    margin-top: 1em;
+}
+#explain {
+    text-align: center;
+}
+
+
+/* contribution graph & commits & output */
 #contribution-graph {
     width: 500px;
     height: 100px;
-    margin: 20px;
+    margin: 10px;
     
-    border-color: #555;
+    border-color: #000;
     border-style: solid;
     border-radius: 5px;
 }
-
 #commit {
     width: 10px;
     height: 10px;
-    margin: 3px;
+    margin: 2px;
 
     border-color: rgb(144, 230, 158);
     border-style: solid;
+}
+#schedule-output {
+    display: none;
+
+    width: 80%;
+    height: 100px;
+    margin: 25px;
+
+    border-color: #000;
+    border-style: solid;
+    border-radius: 5px;
 }

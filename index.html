@@ -10,39 +10,37 @@
     <title>commitCanvas</title>
 </head>
 <body>
-    <!-- help bar -->
-    <header>
-        <div>
-            <a href="#">help <i class="far fa-question-circle"></i></a>
-        </div>
-    </header>
+    <div class="u-full-width flex-header">
+        <a href="#">help <i class="far fa-question-circle"></i></a>
+    </div>
 
-    <!-- main body -->
-    <main>
-        <h1>commitCanvas</h1>
-        <h5>an interactive tool that helps you create art within you own Github contribution graph</h5>
-        <form>
-            <div class="row">
-                <div class="u-full-width flex-form">
-                    <label for="custom-message">art goes here</label>
-                    <input class="u-full-width" type="text" placeholder="message / letterArt / pattern / symbol">
-                    <input class="button-primary" type="submit" value="Submit">
-                </div>
+    <div class="container">
+        <h1 id="title">commitCanvas</h1>
+
+        <h5 id="explain">an interactive tool that helps you create art within you own Github contribution graph</h5>
+
+        <form class="flex-form">
+            <div class="flex-form">
+                <label for="custom-message">art goes here</label>
+                <input class="u-full-width" type="text" placeholder="message / letterArt / pattern / symbol">
+                <input class="button-primary" type="submit" value="Submit">
             </div>
         </form>
+
         <div id="contribution-graph">
             <div class="commit"></div>
-
+            <div class="commit"></div>
+            <div class="commit"></div>
+            <div class="commit"></div>
+            <div class="commit"></div>
         </div>
+
         <a href="#">advanced <i class="fas fa-caret-down"></i></a>
-        <div id="schedule-output">
-            
-        </div>
-    </main>
 
-    <footer>
-    
-    </footer>
+        <div id="schedule-output">
+            <p>this is where the output schedule will go</p>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>
