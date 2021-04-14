@@ -8,9 +8,6 @@ a {
 body {
     height: 100vh;
     margin: auto;
-
-    border-color: goldenrod;
-    border-style: solid;
 }
 .container {
     width: 80%;
@@ -25,7 +22,7 @@ input {
 .flex-header {
     display: flex;
     justify-content: flex-end;
-}
+    }
 .flex-form {
     width: 60%;
 
@@ -45,22 +42,24 @@ input {
 
 
 /* contribution graph & commits & output */
-#contribution-graph {
+#contribution-graph-window {
     width: 700px;
     height: 150px;
     margin: 10px;
     
-    border-color: #000;
-    border-style: solid;
+    border: 1px solid #ccc;
     border-radius: 5px;
+
+    display: flex;
 }
-#commit {
+.commit {
     width: 10px;
     height: 10px;
     margin: 2px;
 
-    border-color: rgb(144, 230, 158);
-    border-style: solid;
+    border: 1px solid #DCDEE2;
+    background-color: #E8EAEE;
+    border-radius: 2px;
 }
 #schedule-output {
     display: none;
@@ -70,7 +69,6 @@ input {
     margin: 25px;
     padding: 1em;
 
-    border-color: #000;
-    border-style: solid;
+    border: 1px solid #ccc;
     border-radius: 5px;
 }
