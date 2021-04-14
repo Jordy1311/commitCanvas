@@ -46,8 +46,8 @@ input {
 
 /* contribution graph & commits & output */
 #contribution-graph {
-    width: 500px;
-    height: 100px;
+    width: 700px;
+    height: 150px;
     margin: 10px;
     
     border-color: #000;
@@ -68,6 +68,7 @@ input {
     width: 80%;
     height: 100px;
     margin: 25px;
+    padding: 1em;
 
     border-color: #000;
     border-style: solid;
