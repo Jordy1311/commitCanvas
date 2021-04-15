@@ -41,7 +41,7 @@ input {
 }
 
 
-/* contribution graph & commits & output */
+/* contribution graph & commits */
 #contribution-graph-window {
     width: 700px;
     height: 150px;
@@ -49,10 +49,15 @@ input {
     
     border: 1px solid #ccc;
     border-radius: 5px;
-
+}
+.year {
+    margin: 20px;
+    
     display: flex;
 }
-.commit {
+.week {
+}
+.commit-1 {
     width: 10px;
     height: 10px;
     margin: 2px;
@@ -61,8 +66,46 @@ input {
     background-color: #E8EAEE;
     border-radius: 2px;
 }
+.commit-2 {
+    width: 10px;
+    height: 10px;
+    margin: 2px;
+
+    border: 1px solid #8adb97;
+    background-color: #72e69e;
+    border-radius: 2px;
+}
+.commit-3 {
+    width: 10px;
+    height: 10px;
+    margin: 2px;
+
+    border: 1px solid #37b355;
+    background-color: #38bc58;
+    border-radius: 2px;
+}
+.commit-4 {
+    width: 10px;
+    height: 10px;
+    margin: 2px;
+
+    border: 1px solid #2a9043;
+    background-color: #2a9745;
+    border-radius: 2px;
+}
+.commit-5 {
+    width: 10px;
+    height: 10px;
+    margin: 2px;
+
+    border: 1px solid #1e6332;
+    background-color: #1e5f31;
+    border-radius: 2px;
+}
+
+
 #schedule-output {
-    display: none;
+    /* display: none; */
 
     width: 80%;
     height: 100px;
