@@ -50,17 +50,17 @@ input {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-.year {
-    margin: 20px;
+#year {
+    margin: 10px;
     
     display: flex;
 }
 .week {
 }
 .commit-1 {
-    width: 10px;
-    height: 10px;
-    margin: 2px;
+    width: 8px;
+    height: 8px;
+    margin: 2px 1px;
 
     border: 1px solid #DCDEE2;
     background-color: #E8EAEE;
