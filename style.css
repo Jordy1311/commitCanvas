@@ -57,7 +57,7 @@ input {
 }
 .week {
 }
-.commit-1 {
+.commit-0 {
     width: 8px;
     height: 8px;
     margin: 2px 1px;
@@ -66,37 +66,37 @@ input {
     background-color: #E8EAEE;
     border-radius: 2px;
 }
-.commit-2 {
-    width: 10px;
-    height: 10px;
-    margin: 2px;
+.commit-1 {
+    width: 8px;
+    height: 8px;
+    margin: 2px 1px;
 
     border: 1px solid #8adb97;
     background-color: #72e69e;
     border-radius: 2px;
 }
-.commit-3 {
-    width: 10px;
-    height: 10px;
-    margin: 2px;
+.commit-2 {
+    width: 8px;
+    height: 8px;
+    margin: 2px 1px;
 
     border: 1px solid #37b355;
     background-color: #38bc58;
     border-radius: 2px;
 }
-.commit-4 {
-    width: 10px;
-    height: 10px;
-    margin: 2px;
+.commit-3 {
+    width: 8px;
+    height: 8px;
+    margin: 2px 1px;
 
     border: 1px solid #2a9043;
     background-color: #2a9745;
     border-radius: 2px;
 }
-.commit-5 {
-    width: 10px;
-    height: 10px;
-    margin: 2px;
+.commit-4 {
+    width: 8px;
+    height: 8px;
+    margin: 2px 1px;
 
     border: 1px solid #1e6332;
     background-color: #1e5f31;
