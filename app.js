@@ -2,13 +2,23 @@ const contributionGraph = document.getElementById('year')
 const textForm = document.getElementById('text-form')
 const textField = document.getElementById('text-field')
 
-window .onload = function() {
-    for(i=0; i<53; i++) {
-        const week = document.createElement('div')
-        week.className = 'week'
-        week.innerHTML = '<div class="commit-1"></div><div class="commit-1"></div><div class="commit-1"></div><div class="commit-1"></div><div class="commit-1"></div><div class="commit-1"></div><div class="commit-1"></div>'
-        week.addEventListener('click', function() {console.log(`${week[i]} says: Ouch!!`)})
-        contributionGraph.appendChild(week)
+let dayOfYear = 1
+
+window.onload = function() {
+    for(week=1; week<54; week++) {
+        const createdWeek = document.createElement('div')
+        createdWeek.className = `week`
+        createdWeek.id = `week-${week}`
+        for(day=1; day<8; day++) {
+            if(dayOfYear < 367) {
+                const createdDay = document.createElement('div')
+                createdDay.className = 'commit-1'
+                createdDay.id = `day-${dayOfYear}`
+                createdWeek.appendChild(createdDay)
+                dayOfYear++
+            } else {}
+        }
+        contributionGraph.appendChild(createdWeek)
     }}
 
 textForm.addEventListener('submit', function(e) {
