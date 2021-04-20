@@ -7,19 +7,19 @@ let commitGraphState = {}
 
 window.onload = function() {
     for(week=1; week<54; week++) {
-        // create week div and id
+        // CREATE WEEK DIV AND ID
         const createdWeek = document.createElement('div')
         createdWeek.className = `week`
         createdWeek.id = `week-${week}`
 
         for(day=1; day<8; day++) {
             if(dayOfYear < 367) {
-                // create days * 366 (discussion point/required development) and id
+                // CREATE DAYS * 366 (discussion point/required development) AND ID
                 const createdDay = document.createElement('div')
                 createdDay.className = 'commit-0'
                 createdDay.id = `day-${dayOfYear}`
 
-                // recording commitGraphState
+                // RECORDING COMMITGRAPHSTATE
                 if(commitGraphState[`week-${week}`] === undefined) {
                     switch(createdDay.className){
                         case 'commit-0': commitGraphState[`week-${week}`] = [0];
@@ -46,27 +46,30 @@ window.onload = function() {
                             break;
                     }}
 
-                // append day to week
+                // APPEND DAY TO WEEK
                 createdWeek.appendChild(createdDay)
                 
-                // increase count of year for id-ing days
+                // INCREASE COUNT OF YEAR FOR ID-ING DAYS
                 dayOfYear++
             } else {}
         }
-        // append week to graph
+        // APPEND WEEK TO GRAPH
         contributionGraph.appendChild(createdWeek)
 
-        // create week event listener
+        // CREATE WEEK EVENT LISTENER
         document.getElementById(`week-${week}`).addEventListener('click', weekClick)
     }}
 
 textForm.addEventListener('submit', function(e) {
     console.log(textField.value)
+    e.target.children[0].children[1].value = ''
+        // input - function that takes letter and inputs it to the commitGraphState and the cubes
+        // input - function that creates the schedule output
     e.preventDefault()
 })
 
 function weekClick(e) {
     if(e.target.id.includes('day')) {
         e.target.className = 'commit-2'
-    }
+    } else {}
 }
