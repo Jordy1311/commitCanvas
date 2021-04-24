@@ -1,0 +1,22 @@
+{
+  "name": "commitcanvas",
+  "version": "1.0.0",
+  "description": "commitCanvas is a tool that will provide a commit schedule that, if followed, creates the entered pattern/letters/symbols/custom input within Github's contribution graph.",
+  "main": "app.js",
+  "scripts": {
+    "fmt": "prettier -w ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jordy1311/commitCanvas.git"
+  },
+  "author": "Jordan Cooper",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jordy1311/commitCanvas/issues"
+  },
+  "homepage": "https://github.com/Jordy1311/commitCanvas#readme",
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  }
+}
