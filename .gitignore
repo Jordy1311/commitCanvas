@@ -1,1 +1,4 @@
 /node_modules/
+
+# ignore build bundle
+/dist/main.js
