@@ -1,60 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" integrity="sha512-5fsy+3xG8N/1PV5MIJz9ZsWpkltijBI48gBzQ/Z2eVATePGHOkMIn+xTDHIfTZFVb9GMpflF2wOWItqxAP2oLQ==" crossorigin="anonymous" />
-    <script src="https://kit.fontawesome.com/3a539c28be.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css"
+      integrity="sha512-5fsy+3xG8N/1PV5MIJz9ZsWpkltijBI48gBzQ/Z2eVATePGHOkMIn+xTDHIfTZFVb9GMpflF2wOWItqxAP2oLQ=="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://kit.fontawesome.com/3a539c28be.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
     <title>commitCanvas</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="u-full-width flex-header">
-        <a href="#">help <i class="far fa-question-circle"></i></a>
+      <a href="#">help <i class="far fa-question-circle"></i></a>
     </div>
 
     <div class="container">
-        <h1 id="title">commitCanvas</h1>
+      <h1 id="title">commitCanvas</h1>
 
-        <h5 id="explain">an interactive tool that helps you create art within you own Github contribution graph</h5>
+      <h5 id="explain">
+        an interactive tool that helps you create art within you own Github
+        contribution graph
+      </h5>
 
-        <form class="flex-form" id="text-form">
-            <div class="flex-form">
-                <label for="custom-message">art goes here</label>
-                <input class="u-full-width" type="text" placeholder="message / letterArt / pattern / symbol"
-                id="text-field">
-                <input class="button-primary" type="submit" value="Submit">
-            </div>
-        </form>
-
-        <div id="contribution-graph-window">
-            <div id="year">
-            </div>
+      <form class="flex-form" id="text-form">
+        <div class="flex-form">
+          <label for="custom-message">art goes here</label>
+          <input
+            class="u-full-width"
+            type="text"
+            placeholder="message / letterArt / pattern / symbol"
+            id="text-field"
+          />
+          <input class="button-primary" type="submit" value="Submit" />
         </div>
+      </form>
 
-        <a href="#">advanced <i class="fas fa-caret-down"></i></a>
+      <div id="contribution-graph-window">
+        <div id="year"></div>
+      </div>
 
-        <table id="schedule-output" class="u-full-width">
-            <thead>
-              <tr>
-                <th>date</th>
-                <th>number of commits</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>tomorrow</td>
-                <td>5 commits</td>
-              </tr>
-              <tr>
-                <td>tomorrow's tomorrow</td>
-                <td>6 commits</td>
-              </tr>
-            </tbody>
-          </table>
+      <a href="#">advanced <i class="fas fa-caret-down"></i></a>
+
+      <table id="schedule-output" class="u-full-width">
+        <thead>
+          <tr>
+            <th>date</th>
+            <th>number of commits</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>tomorrow</td>
+            <td>5 commits</td>
+          </tr>
+          <tr>
+            <td>tomorrow's tomorrow</td>
+            <td>6 commits</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <script src="main.js"></script>
-</body>
+  </body>
 </html>

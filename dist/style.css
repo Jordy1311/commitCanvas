@@ -1,117 +1,113 @@
 /* global styling */
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
-
 
 /* flex layout */
 body {
-    height: 100vh;
-    margin: auto;
+  height: 100vh;
+  margin: auto;
 }
 .container {
-    width: 80%;
+  width: 80%;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 input {
-    text-align: center;
+  text-align: center;
 }
 .flex-header {
-    display: flex;
-    justify-content: flex-end;
-    }
-.flex-form {
-    width: 60%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  justify-content: flex-end;
 }
+.flex-form {
+  width: 60%;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 #title {
-    color: rgb(144, 230, 158);
-    margin-top: 1em;
+  color: rgb(144, 230, 158);
+  margin-top: 1em;
 }
 #explain {
-    text-align: center;
+  text-align: center;
 }
-
 
 /* contribution graph & commits */
 #contribution-graph-window {
-    width: 700px;
-    height: 150px;
-    margin: 10px;
-    
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  width: 700px;
+  height: 150px;
+  margin: 10px;
+
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 #year {
-    margin: 10px;
-    
-    display: flex;
+  margin: 10px;
+
+  display: flex;
 }
 .week {
 }
 .commit-0 {
-    width: 8px;
-    height: 8px;
-    margin: 2px 1px;
+  width: 8px;
+  height: 8px;
+  margin: 2px 1px;
 
-    border: 1px solid #DCDEE2;
-    background-color: #E8EAEE;
-    border-radius: 2px;
+  border: 1px solid #dcdee2;
+  background-color: #e8eaee;
+  border-radius: 2px;
 }
 .commit-1 {
-    width: 8px;
-    height: 8px;
-    margin: 2px 1px;
+  width: 8px;
+  height: 8px;
+  margin: 2px 1px;
 
-    border: 1px solid #8adb97;
-    background-color: #72e69e;
-    border-radius: 2px;
+  border: 1px solid #8adb97;
+  background-color: #72e69e;
+  border-radius: 2px;
 }
 .commit-2 {
-    width: 8px;
-    height: 8px;
-    margin: 2px 1px;
+  width: 8px;
+  height: 8px;
+  margin: 2px 1px;
 
-    border: 1px solid #37b355;
-    background-color: #38bc58;
-    border-radius: 2px;
+  border: 1px solid #37b355;
+  background-color: #38bc58;
+  border-radius: 2px;
 }
 .commit-3 {
-    width: 8px;
-    height: 8px;
-    margin: 2px 1px;
+  width: 8px;
+  height: 8px;
+  margin: 2px 1px;
 
-    border: 1px solid #2a9043;
-    background-color: #2a9745;
-    border-radius: 2px;
+  border: 1px solid #2a9043;
+  background-color: #2a9745;
+  border-radius: 2px;
 }
 .commit-4 {
-    width: 8px;
-    height: 8px;
-    margin: 2px 1px;
+  width: 8px;
+  height: 8px;
+  margin: 2px 1px;
 
-    border: 1px solid #1e6332;
-    background-color: #1e5f31;
-    border-radius: 2px;
+  border: 1px solid #1e6332;
+  background-color: #1e5f31;
+  border-radius: 2px;
 }
 
-
 #schedule-output {
-    /* display: none; */
+  /* display: none; */
 
-    width: 80%;
-    height: 100px;
-    margin: 25px;
-    padding: 1em;
+  width: 80%;
+  height: 100px;
+  margin: 25px;
+  padding: 1em;
 
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
