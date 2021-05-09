@@ -1,22 +1,8 @@
 /* 
 MODULES:
 UICONTROLLER (expose f that change UI):
-	Initialise methods:
-    clear schedule
-	Event Listening:
-    get customText input and clear field on submission
-    get username input and clear field on submission
-    listen for graph clicks
-    listen for schedule request click
-	Rendering methods:
-    render schedule based on GenSchedule
-    render graph based on graph state
 GRAPHSTATECONTROLLER:
-	pull state from storage
-	init at 0
-	draw state down from username GHAPI
 SCHEDULECONTROLLER:
-	take graphState and create schedule that creates graph 	on GH
 */
 
 /* BASIC STRUCTURE
@@ -29,15 +15,28 @@ SCHEDULECONTROLLER:
 */
 
 const UIController = (function() {
-  console.log('UIController loaded!');
+  // METHODS
+  // ON PAGE LOAD - (function() {clear/init empty schedule})();
+  // INIT function renderGraph (GraphState) {render graph}
+  // INIT function renderSchedule (Schedule) {render schedule}
+
+  // EVENT LISTENING METHODS
+  // textInput.addeventlistener('submit', function(e){console.log(e.target.value); e.target.value = '';})
+  // userNameInput.addeventlistener('submit', function(e){console.log(e.target.value); e.target.value = '';})
+  // dayCube.addeventlistener('click', function(e) {updateGraphState(e.target.id); renderGraph(GraphState);) ?????
+  // scheduleRequest.addeventlistener('submit', renderSchedule(Schedule))
 })();
 
 const GraphStateController = (function() {
-  console.log('GraphStateController loaded!');
+  // METHODS
+  // ON PAGE LOAD - (function() {if(localStorage.graphState = something) {load from local} else {init at 0}})
+  // INIT function updateGraphState(target) {update the target cube value in GraphState to new value}
+  // INIT function drawGraphStateFromUsername(GithubUsername) {update state as graph from username}
 })();
 
 const ScheduleController = (function() {
-  console.log('ScheduleController loaded!');
+  // METHODS
+  // INIT function createSchedule(graphState) {creates schedule}
 })();
 
 // const contributionGraph = document.getElementById("year");
