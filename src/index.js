@@ -1,11 +1,4 @@
-/* 
-MODULES:
-UICONTROLLER (expose f that change UI):
-GRAPHSTATECONTROLLER:
-SCHEDULECONTROLLER:
-*/
-
-/* BASIC STRUCTURE
+/* BASIC MODULE STRUCTURE
   (function() {
     // Declear private vars & functions
     return {
@@ -14,16 +7,37 @@ SCHEDULECONTROLLER:
   })();
 */
 
-const UIController = (function() {
+const UICtrl = (function() {
+  const contributionGraph = document.getElementById("year");
+  const textForm = document.getElementById("text-form");
+  const textField = document.getElementById("text-field");
+
+  let weekClick = (event) => {
+    className = event.target.className;
+    if (event.target.id.includes("day")) {
+      className = "commit-2";
+      if(className == "commit-6") {
+        className = "commit-0";
+      }
+    }
+  }
+
+  let customTextSubmitted = (event) => {
+    console.log(textField.value);
+    textField.value = "";
+    event.preventDefault();
+  }
+
   // METHODS
   // ON PAGE LOAD - (function() {clear/init empty schedule})();
   // INIT function renderGraph (GraphState) {render graph}
   // INIT function renderSchedule (Schedule) {render schedule}
 
-  // EVENT LISTENING METHODS
-  // textInput.addeventlistener('submit', function(e){console.log(e.target.value); e.target.value = '';})
+  // EVENT LISTENERS
+  textForm.addEventListener("submit", customTextSubmitted);
+  // dayCube event listener
+  // document.getElementById(`week-${week}`).addEventListener("click", weekClick);
   // userNameInput.addeventlistener('submit', function(e){console.log(e.target.value); e.target.value = '';})
-  // dayCube.addeventlistener('click', function(e) {updateGraphState(e.target.id); renderGraph(GraphState);) ?????
   // scheduleRequest.addeventlistener('submit', renderSchedule(Schedule))
 })();
 
