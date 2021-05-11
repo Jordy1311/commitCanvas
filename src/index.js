@@ -49,14 +49,14 @@ const GraphStateController = (function() {
 })();
 
 const ScheduleController = (function() {
+const ScheduleCtrl = (function() {
   // METHODS
   // INIT function createSchedule(graphState) {creates schedule}
 })();
 
-// const contributionGraph = document.getElementById("year");
-// const textForm = document.getElementById("text-form");
-// const textField = document.getElementById("text-field");
 
+
+// OLD STUFF - MIGRATE TO MODULES AND MAKE BETTER
 // let dayOfYear = 1;
 // let commitGraphState = {};
 
@@ -123,25 +123,3 @@ const ScheduleController = (function() {
 //     }
 //     // APPEND WEEK TO GRAPH
 //     contributionGraph.appendChild(createdWeek);
-
-//     // CREATE WEEK EVENT LISTENER
-//     document
-//       .getElementById(`week-${week}`)
-//       .addEventListener("click", weekClick);
-//   }
-// };
-
-// textForm.addEventListener("submit", function (e) {
-//   console.log(textField.value);
-//   e.target.children[0].children[1].value = "";
-//   // input - function that takes letter and inputs it to the commitGraphState and the cubes
-//   // input - function that creates the schedule output
-//   e.preventDefault();
-// });
-
-// function weekClick(e) {
-//   if (e.target.id.includes("day")) {
-//     e.target.className = "commit-2";
-//   } else {
-//   }
-// }
