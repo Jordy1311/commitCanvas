@@ -41,14 +41,33 @@ const UICtrl = (function() {
   // scheduleRequest.addeventlistener('submit', renderSchedule(Schedule))
 })();
 
-const GraphStateController = (function() {
+const GraphStateCtrl = (function() {
+  let _graphState = {};
+
   // METHODS
   // ON PAGE LOAD - (function() {if(localStorage.graphState = something) {load from local} else {init at 0}})
+  let initGraph = (val) => {
+    for(i=1; i<=52; i++) {
+      _graphState[`week${i}`] = [val, val, val, val, val, val, val];
+    };
+    // take out console.logs when I can console.log(graphState) outside of this module
+    console.log(`_graphState initilised at ${val}`);
+    console.log(_graphState);
+  };
+
+  
+
   // INIT function updateGraphState(target) {update the target cube value in GraphState to new value}
   // INIT function drawGraphStateFromUsername(GithubUsername) {update state as graph from username}
+
+  return {
+    graphState: _graphState,
+    initGraph: initGraph
+  }
 })();
 
-const ScheduleController = (function() {
+initGraph(0);
+
 const ScheduleCtrl = (function() {
   // METHODS
   // INIT function createSchedule(graphState) {creates schedule}
