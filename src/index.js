@@ -54,20 +54,23 @@ const UICtrl = (function() {
 
   let drawSwitch = false;
 
-  let graphDrawSwitcher = (event) => {
+  let graphDrawSwitcherOn = (event) => {
     drawSwitch = !drawSwitch;
-    changeCommitValue(event);
+    if(event.target.className === "commit-4") {
+      event.target.className = "commit-0";
+    } else {
+      changeCommitValue(event);
+    }
   }
+
+  let graphDrawSwitcherOff = (event) => drawSwitch = !drawSwitch
 
   let changeCommitValue = (event) => {
     if(drawSwitch == true && event.target.className.includes("commit-")) {
       let currentCommitValue = parseInt(event.target.className.charAt(7));
-      if(currentCommitValue === 4) {
-        event.target.className = "commit-0";
-      } else {
+      if(currentCommitValue < 4) {
         event.target.className = `commit-${currentCommitValue + 1}`;
-      };
-      console.log(event.target);
+      }
     };
   }
 
@@ -85,8 +88,8 @@ const UICtrl = (function() {
   // EVENT LISTENERS
   textForm.addEventListener("submit", customTextSubmitted);
   contributionGraph.addEventListener("mouseover", changeCommitValue);
-  contributionGraph.addEventListener("mousedown", graphDrawSwitcher);
-  contributionGraph.addEventListener("mouseup", graphDrawSwitcher);
+  contributionGraph.addEventListener("mousedown", graphDrawSwitcherOn);
+  contributionGraph.addEventListener("mouseup", graphDrawSwitcherOff);
   // dayCube event listener
   // document.getElementById(`week-${week}`).addEventListener("click", weekClick);
   // userNameInput.addeventlistener('submit', function(e){console.log(e.target.value); e.target.value = '';})
