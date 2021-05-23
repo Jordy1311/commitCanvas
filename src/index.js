@@ -52,21 +52,30 @@ const UICtrl = (function() {
     };
   }
 
-  let weekClick = (event) => {
-    className = event.target.className;
-    if (event.target.id.includes("day")) {
-      className = "commit-2";
-      if(className == "commit-6") {
-        className = "commit-0";
-      }
+  let graphDrawSwitcher = (event) => {
+    if(event.type == "mousedown") {
+      commitValueChange(event);
     }
   }
+// not sure how to toggle draw when mouse is down and toggle again when mouse is up
+
+  let commitValueChange = (event) => {
+    if(event.target.className.includes("commit-")) {
+      let currentValue = parseInt(event.target.className.charAt(7));
+      if(currentValue === 4) {
+        event.target.className = "commit-0";
+      } else {
+        event.target.className = `commit-${currentValue + 1}`;
+      };
+    };
+  };
+
 
   let customTextSubmitted = (event) => {
     console.log(textField.value);
     textField.value = "";
     event.preventDefault();
-  }
+  };
 
   // METHODS
   // ON PAGE LOAD - (function() {clear/init empty schedule})();
@@ -75,6 +84,8 @@ const UICtrl = (function() {
 
   // EVENT LISTENERS
   textForm.addEventListener("submit", customTextSubmitted);
+  contributionGraph.addEventListener("mousedown", graphDrawSwitcher);
+  contributionGraph.addEventListener("mouseup", graphDrawSwitcher);
   // dayCube event listener
   // document.getElementById(`week-${week}`).addEventListener("click", weekClick);
   // userNameInput.addeventlistener('submit', function(e){console.log(e.target.value); e.target.value = '';})
