@@ -31,6 +31,17 @@ const UICtrl = (function() {
   const textForm = document.getElementById("text-form");
   const textField = document.getElementById("text-field");
 
+  window.onload = () => {
+    let dayOfYear = 1;
+    for(let week in GraphStateCtrl.graphState) {
+      let currentlyEvaluatedWeek = GraphStateCtrl.graphState[week];
+      currentlyEvaluatedWeek.forEach(day => {
+        console.log(`day ${dayOfYear} has the value of ${day}`);
+        dayOfYear++
+      });
+    };
+  }
+
   let weekClick = (event) => {
     className = event.target.className;
     if (event.target.id.includes("day")) {
