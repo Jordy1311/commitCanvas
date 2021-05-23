@@ -22,7 +22,7 @@ const GraphStateCtrl = (function() {
   }
 })();
 
-GraphStateCtrl.initGraph(4);
+GraphStateCtrl.initGraph(0);
 
 
 // THIS MODULE IS RESPONSIBLE FOR WATCHING AND RENDERING ELEMENTS IN THE UI
@@ -31,14 +31,24 @@ const UICtrl = (function() {
   const textForm = document.getElementById("text-form");
   const textField = document.getElementById("text-field");
 
+  // inits graph
   window.onload = () => {
-    let dayOfYear = 1;
-    for(let week in GraphStateCtrl.graphState) {
-      let currentlyEvaluatedWeek = GraphStateCtrl.graphState[week];
-      currentlyEvaluatedWeek.forEach(day => {
-        console.log(`day ${dayOfYear} has the value of ${day}`);
-        dayOfYear++
+    for(let currentWeek in GraphStateCtrl.graphState) {
+      let currentlyEvaluatedWeek = GraphStateCtrl.graphState[currentWeek];
+      // create week div
+      const createdWeek = document.createElement("div");
+
+      currentlyEvaluatedWeek.forEach(dayValue => {
+        console.log(`day has the value of ${dayValue}`);
+        // create day div
+        const createdDay = document.createElement("div");
+        // asign classname
+        createdDay.className = `commit-${dayValue}`;
+        // attach day div to week
+        createdWeek.appendChild(createdDay);
       });
+      // attach week to contributionGraph
+      contributionGraph.appendChild(createdWeek);
     };
   }
 
@@ -85,18 +95,13 @@ const ScheduleCtrl = (function() {
 // let commitGraphState = {};
 
 // window.onload = function () {
-//   for (week = 1; week < 54; week++) {
-//     // CREATE WEEK DIV AND ID
-//     const createdWeek = document.createElement("div");
-//     createdWeek.className = `week`;
-//     createdWeek.id = `week-${week}`;
 
 //     for (day = 1; day < 8; day++) {
 //       if (dayOfYear < 367) {
 //         // CREATE DAYS * 366 (discussion point/required development) AND ID
 //         const createdDay = document.createElement("div");
 //         createdDay.className = "commit-0";
-//         createdDay.id = `day-${dayOfYear}`;
+
 
 //         // RECORDING COMMITGRAPHSTATE
 //         if (commitGraphState[`week-${week}`] === undefined) {
@@ -146,4 +151,4 @@ const ScheduleCtrl = (function() {
 //       }
 //     }
 //     // APPEND WEEK TO GRAPH
-//     contributionGraph.appendChild(createdWeek);
+//     
