@@ -1,4 +1,4 @@
-// THIS MODULE HOLDS THE CURRENT STATE INFORMATION REGARDING THE GRAPH
+// HOLDS THE CURRENT STATE INFORMATION REGARDING THE GRAPH
 const GraphStateCtrl = (function() {
   let _graphState = {};
 
@@ -25,7 +25,7 @@ const GraphStateCtrl = (function() {
 GraphStateCtrl.initGraph(0);
 
 
-// THIS MODULE IS RESPONSIBLE FOR WATCHING AND RENDERING ELEMENTS IN THE UI
+// RESPONSIBLE FOR WATCHING AND RENDERING ELEMENTS IN THE UI
 const UICtrl = (function() {
   const contributionGraph = document.getElementById("year");
   const textForm = document.getElementById("text-form");
@@ -52,24 +52,22 @@ const UICtrl = (function() {
     };
   }
 
-  let graphDrawSwitcher = (event) => {
-    if(event.type == "mousedown") {
-      commitValueChange(event);
-    }
-  }
-// not sure how to toggle draw when mouse is down and toggle again when mouse is up
+  let drawSwitch = false;
 
-  let commitValueChange = (event) => {
-    if(event.target.className.includes("commit-")) {
-      let currentValue = parseInt(event.target.className.charAt(7));
-      if(currentValue === 4) {
+  let graphDrawSwitcher = () => {
+    drawSwitch = !drawSwitch;
+  }
+
+  let changeCommitValue = (event) => {
+    if(drawSwitch == true && event.target.className.includes("commit-")) {
+      let currentCommitValue = parseInt(event.target.className.charAt(7));
+      if(currentCommitValue === 4) {
         event.target.className = "commit-0";
       } else {
-        event.target.className = `commit-${currentValue + 1}`;
+        event.target.className = `commit-${currentCommitValue + 1}`;
       };
     };
-  };
-
+  }
 
   let customTextSubmitted = (event) => {
     console.log(textField.value);
@@ -84,6 +82,8 @@ const UICtrl = (function() {
 
   // EVENT LISTENERS
   textForm.addEventListener("submit", customTextSubmitted);
+  contributionGraph.addEventListener("mousein", changeCommitValue);
+  contributionGraph.addEventListener("mouseout", changeCommitValue);
   contributionGraph.addEventListener("mousedown", graphDrawSwitcher);
   contributionGraph.addEventListener("mouseup", graphDrawSwitcher);
   // dayCube event listener
@@ -93,7 +93,7 @@ const UICtrl = (function() {
 })();
 
 
-// THIS MODULE IS RESPONSIBLE FOR GENERATING THE SCHEDULE UPON REQUEST
+// RESPONSIBLE FOR GENERATING THE SCHEDULE UPON REQUEST
 const ScheduleCtrl = (function() {
   // METHODS
   // INIT function createSchedule(graphState) {creates schedule}
