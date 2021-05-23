@@ -54,8 +54,9 @@ const UICtrl = (function() {
 
   let drawSwitch = false;
 
-  let graphDrawSwitcher = () => {
+  let graphDrawSwitcher = (event) => {
     drawSwitch = !drawSwitch;
+    changeCommitValue(event);
   }
 
   let changeCommitValue = (event) => {
@@ -66,6 +67,7 @@ const UICtrl = (function() {
       } else {
         event.target.className = `commit-${currentCommitValue + 1}`;
       };
+      console.log(event.target);
     };
   }
 
@@ -82,8 +84,7 @@ const UICtrl = (function() {
 
   // EVENT LISTENERS
   textForm.addEventListener("submit", customTextSubmitted);
-  contributionGraph.addEventListener("mousein", changeCommitValue);
-  contributionGraph.addEventListener("mouseout", changeCommitValue);
+  contributionGraph.addEventListener("mouseover", changeCommitValue);
   contributionGraph.addEventListener("mousedown", graphDrawSwitcher);
   contributionGraph.addEventListener("mouseup", graphDrawSwitcher);
   // dayCube event listener
