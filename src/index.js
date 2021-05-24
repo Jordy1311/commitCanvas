@@ -1,9 +1,11 @@
-// HOLDS THE CURRENT STATE INFORMATION REGARDING THE GRAPH
+//// HOLDS THE CURRENT STATE INFORMATION REGARDING THE GRAPH
 const GraphStateCtrl = (function() {
   let _graphState = {};
 
-  // METHODS
+  // METHODS TO DO
   // ON PAGE LOAD - (function() {if(localStorage.graphState = something) {load from local} else {init at 0}})
+  // function drawGraphStateFromUsername(GithubUsername) {update state as graph from username}
+
   let initGraph = (val) => {
     for(i=1; i<=52; i++) {
       _graphState[`week${i}`] = [val, val, val, val, val, val, val];
@@ -13,9 +15,6 @@ const GraphStateCtrl = (function() {
   let updateState = (week, day, newVal) => {
     _graphState[week][day] = newVal;
   }
-
-  // INIT function updateGraphState(target) {update the target cube value in GraphState to new value}
-  // INIT function drawGraphStateFromUsername(GithubUsername) {update state as graph from username}
 
   return {
     graphState: _graphState,
@@ -27,7 +26,7 @@ const GraphStateCtrl = (function() {
 // remove and replace once graph state function fully developed
 GraphStateCtrl.initGraph(0);
 
-// RESPONSIBLE FOR WATCHING AND RENDERING ELEMENTS IN THE UI
+//// RESPONSIBLE FOR WATCHING AND RENDERING ELEMENTS IN THE UI
 const UICtrl = (function() {
   const contributionGraph = document.getElementById("year");
   const textForm = document.getElementById("text-form");
@@ -35,7 +34,11 @@ const UICtrl = (function() {
   const graphClearButton = document.getElementById("clear-button");
   const logGraphState = document.getElementById("log-graphState");
 
-  // initalizes graph
+  // METHODS TO DO
+  // (function() {clear/init empty schedule})();
+  // function renderSchedule (Schedule) {render schedule}
+
+  // inits graph
   window.onload = () => {
     drawGraph()
   }
@@ -70,6 +73,8 @@ const UICtrl = (function() {
     drawGraph(event);
   }
 
+  // update to include change in color over time held
+  // eraser toggle
   let drawSwitch = false;
 
   let graphDrawSwitcherOn = (event) => {
@@ -82,7 +87,7 @@ const UICtrl = (function() {
     }
   }
 
-  let graphDrawSwitcherOff = (event) => drawSwitch = !drawSwitch
+  let graphDrawSwitcherOff = () => drawSwitch = !drawSwitch
 
   let changeCommitValue = (event) => {
     if(drawSwitch == true && event.target.className.includes("commit-")) {
@@ -107,10 +112,6 @@ const UICtrl = (function() {
     event.preventDefault();
   };
 
-  // METHODS
-  // ON PAGE LOAD - (function() {clear/init empty schedule})();
-  // INIT function renderSchedule (Schedule) {render schedule}
-
   // EVENT LISTENERS
   textForm.addEventListener("submit", customTextSubmitted);
   contributionGraph.addEventListener("mouseover", changeCommitValue);
@@ -123,73 +124,8 @@ const UICtrl = (function() {
 })();
 
 
-// RESPONSIBLE FOR GENERATING THE SCHEDULE UPON REQUEST
+//// RESPONSIBLE FOR GENERATING THE SCHEDULE UPON REQUEST
 const ScheduleCtrl = (function() {
-  // METHODS
-  // INIT function createSchedule(graphState) {creates schedule}
+  // METHODS TO DO
+  // function createSchedule(graphState) {creates schedule}
 })();
-
-
-
-// OLD STUFF - MIGRATE TO MODULES AND MAKE BETTER
-// let dayOfYear = 1;
-// let commitGraphState = {};
-
-// window.onload = function () {
-
-//     for (day = 1; day < 8; day++) {
-//       if (dayOfYear < 367) {
-//         // CREATE DAYS * 366 (discussion point/required development) AND ID
-//         const createdDay = document.createElement("div");
-//         createdDay.className = "commit-0";
-
-
-//         // RECORDING COMMITGRAPHSTATE
-//         if (commitGraphState[`week-${week}`] === undefined) {
-//           switch (createdDay.className) {
-//             case "commit-0":
-//               commitGraphState[`week-${week}`] = [0];
-//               break;
-//             case "commit-1":
-//               commitGraphState[`week-${week}`] = [1];
-//               break;
-//             case "commit-2":
-//               commitGraphState[`week-${week}`] = [2];
-//               break;
-//             case "commit-3":
-//               commitGraphState[`week-${week}`] = [3];
-//               break;
-//             case "commit-4":
-//               commitGraphState[`week-${week}`] = [4];
-//               break;
-//           }
-//         } else {
-//           switch (createdDay.className) {
-//             case "commit-0":
-//               commitGraphState[`week-${week}`].push(0);
-//               break;
-//             case "commit-1":
-//               commitGraphState[`week-${week}`].push(1);
-//               break;
-//             case "commit-2":
-//               commitGraphState[`week-${week}`].push(2);
-//               break;
-//             case "commit-3":
-//               commitGraphState[`week-${week}`].push(3);
-//               break;
-//             case "commit-4":
-//               commitGraphState[`week-${week}`].push(4);
-//               break;
-//           }
-//         }
-
-//         // APPEND DAY TO WEEK
-//         createdWeek.appendChild(createdDay);
-
-//         // INCREASE COUNT OF YEAR FOR ID-ING DAYS
-//         dayOfYear++;
-//       } else {
-//       }
-//     }
-//     // APPEND WEEK TO GRAPH
-//     
