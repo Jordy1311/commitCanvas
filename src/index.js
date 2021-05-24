@@ -8,22 +8,24 @@ const GraphStateCtrl = (function() {
     for(i=1; i<=52; i++) {
       _graphState[`week${i}`] = [val, val, val, val, val, val, val];
     };
-    console.log(`graph initiated at ${val}:`, _graphState);
   };
 
-  
+  let updateState = (week, day, newVal) => {
+    _graphState[week][day] = newVal;
+  }
 
   // INIT function updateGraphState(target) {update the target cube value in GraphState to new value}
   // INIT function drawGraphStateFromUsername(GithubUsername) {update state as graph from username}
 
   return {
     graphState: _graphState,
-    initGraph: initGraph
+    initGraph: initGraph,
+    updateState: updateState
   }
 })();
 
+// remove and replace once graph state function fully developed
 GraphStateCtrl.initGraph(0);
-
 
 // RESPONSIBLE FOR WATCHING AND RENDERING ELEMENTS IN THE UI
 const UICtrl = (function() {
@@ -33,23 +35,31 @@ const UICtrl = (function() {
   const graphClearButton = document.getElementById("clear-button");
   const logGraphState = document.getElementById("log-graphState");
 
-  // inits graph
+  // initalizes graph
   window.onload = () => {
-    for(let currentWeek in GraphStateCtrl.graphState) {
-      let currentlyEvaluatedWeek = GraphStateCtrl.graphState[currentWeek];
-      // create week div
-      const createdWeek = document.createElement("div");
+    drawGraph()
+  }
 
+  let drawGraph = (event) => {
+    // deletes graph if already present
+    if(contributionGraph.hasChildNodes()) {
+      while(contributionGraph.firstChild) {
+        contributionGraph.firstChild.remove();
+      }
+    }
+    // draws graph in UI based off current graphState
+    for(let Week in GraphStateCtrl.graphState) {
+      let currentlyEvaluatedWeek = GraphStateCtrl.graphState[Week];
+      const createdWeek = document.createElement("div");
+      createdWeek.id = Week;
+      let day = 0;
       currentlyEvaluatedWeek.forEach(dayValue => {
-        console.log(`day has the value of ${dayValue}`);
-        // create day div
         const createdDay = document.createElement("div");
-        // asign classname
+        createdDay.id = day;
         createdDay.className = `commit-${dayValue}`;
-        // attach day div to week
         createdWeek.appendChild(createdDay);
+        day++
       });
-      // attach week to contributionGraph
       contributionGraph.appendChild(createdWeek);
     };
   }
@@ -66,6 +76,7 @@ const UICtrl = (function() {
     drawSwitch = !drawSwitch;
     if(event.target.className === "commit-4") {
       event.target.className = "commit-0";
+      updateGraphState(event);
     } else {
       changeCommitValue(event);
     }
@@ -78,8 +89,16 @@ const UICtrl = (function() {
       let currentCommitValue = parseInt(event.target.className.charAt(7));
       if(currentCommitValue < 4) {
         event.target.className = `commit-${currentCommitValue + 1}`;
+        updateGraphState(event);
       }
     };
+  }
+
+  let updateGraphState = (event) => {
+    let weekToUpdate = event.target.parentNode.id;
+    let dayToUpdate = event.target.id;
+    let updatedVal = parseInt(event.target.className.charAt(7));
+    GraphStateCtrl.updateState(weekToUpdate, dayToUpdate, updatedVal);
   }
 
   let customTextSubmitted = (event) => {
@@ -90,7 +109,6 @@ const UICtrl = (function() {
 
   // METHODS
   // ON PAGE LOAD - (function() {clear/init empty schedule})();
-  // INIT function renderGraph (GraphState) {render graph}
   // INIT function renderSchedule (Schedule) {render schedule}
 
   // EVENT LISTENERS
@@ -98,8 +116,6 @@ const UICtrl = (function() {
   contributionGraph.addEventListener("mouseover", changeCommitValue);
   contributionGraph.addEventListener("mousedown", graphDrawSwitcherOn);
   contributionGraph.addEventListener("mouseup", graphDrawSwitcherOff);
-  // dayCube event listener
-  // document.getElementById(`week-${week}`).addEventListener("click", weekClick);
   graphClearButton.addEventListener("click", graphClear);
   logGraphState.addEventListener("click", () => console.log(GraphStateCtrl.graphState))
   // userNameInput.addeventlistener('submit', function(e){console.log(e.target.value); e.target.value = '';})
