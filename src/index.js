@@ -30,6 +30,8 @@ const UICtrl = (function() {
   const contributionGraph = document.getElementById("year");
   const textForm = document.getElementById("text-form");
   const textField = document.getElementById("text-field");
+  const graphClearButton = document.getElementById("clear-button");
+  const logGraphState = document.getElementById("log-graphState");
 
   // inits graph
   window.onload = () => {
@@ -50,6 +52,12 @@ const UICtrl = (function() {
       // attach week to contributionGraph
       contributionGraph.appendChild(createdWeek);
     };
+  }
+
+  let graphClear = (event) => {
+    event.preventDefault()
+    GraphStateCtrl.initGraph(0);
+    drawGraph(event);
   }
 
   let drawSwitch = false;
@@ -92,6 +100,8 @@ const UICtrl = (function() {
   contributionGraph.addEventListener("mouseup", graphDrawSwitcherOff);
   // dayCube event listener
   // document.getElementById(`week-${week}`).addEventListener("click", weekClick);
+  graphClearButton.addEventListener("click", graphClear);
+  logGraphState.addEventListener("click", () => console.log(GraphStateCtrl.graphState))
   // userNameInput.addeventlistener('submit', function(e){console.log(e.target.value); e.target.value = '';})
   // scheduleRequest.addeventlistener('submit', renderSchedule(Schedule))
 })();
