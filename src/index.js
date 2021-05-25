@@ -1,3 +1,9 @@
+window.onload = () => {
+  // remove and replace initGraph once graph state function fully developed
+  GraphStateCtrl.initGraph(0);
+  UICtrl.drawGraph()
+}
+
 //// HOLDS THE CURRENT STATE INFORMATION REGARDING THE GRAPH
 const GraphStateCtrl = (function() {
   let _graphState = {};
@@ -23,8 +29,6 @@ const GraphStateCtrl = (function() {
   }
 })();
 
-// remove and replace once graph state function fully developed
-GraphStateCtrl.initGraph(0);
 
 //// RESPONSIBLE FOR WATCHING AND RENDERING ELEMENTS IN THE UI
 const UICtrl = (function() {
@@ -43,10 +47,6 @@ const UICtrl = (function() {
   // function renderSchedule (Schedule) {render schedule}
   // userNameInput.addeventlistener('submit', function(e){console.log(e.target.value); e.target.value = '';})
   // scheduleRequest.addeventlistener('submit', renderSchedule(Schedule))
-
-  window.onload = () => {
-    drawGraph()
-  }
 
   let drawGraph = () => {
     // deletes graph if already present
@@ -162,6 +162,10 @@ const UICtrl = (function() {
   drawRadioOption.addEventListener("mouseup", drawOptionSwitcher);
   eraseRadioOption.addEventListener("mouseup", drawOptionSwitcher);
   fullRadioOption.addEventListener("mouseup", drawOptionSwitcher);
+
+  return {
+    drawGraph: drawGraph
+  }
 })();
 
 
