@@ -113,7 +113,7 @@ const UICtrl = (function() {
 
   let drawEraseFull = (event) => {
     let currentCommitValue = parseInt(event.target.className.charAt(7));
-    if(drawSwitch === true && draw === true) {
+    if(drawSwitch && draw) {
       if(event.target.className === "commit-4" && event.type === "mousedown") {
         event.target.className = "commit-0";
         updateGraphState(event);
@@ -123,12 +123,12 @@ const UICtrl = (function() {
           updateGraphState(event);
         }
       };
-    } else if(eraseSwitch === true && draw === true) {
+    } else if(eraseSwitch && draw) {
       if(currentCommitValue > 0) {
         event.target.className = "commit-0";
         updateGraphState(event);
       }
-    } else if(fullSwitch === true && draw === true) {
+    } else if(fullSwitch && draw ) {
       if(currentCommitValue < 4) {
         event.target.className = "commit-4";
         updateGraphState(event);
