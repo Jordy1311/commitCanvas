@@ -1,35 +1,25 @@
-/* global styling */
 a {
   text-decoration: none;
-}
-
-/* flex layout */
-body {
-  height: 100vh;
-  margin: auto;
-}
-.container {
-  width: 80%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  cursor: pointer;
 }
 input {
   text-align: center;
+  width: auto;
 }
-.flex-header {
+.button {
+  margin: 0 2px;
+}
+
+#header {
   display: flex;
   justify-content: flex-end;
 }
-.flex-form {
-  width: 60%;
-
+.container {
+  width: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
 #title {
   color: rgb(144, 230, 158);
   margin-top: 1em;
@@ -37,26 +27,61 @@ input {
 #explain {
   text-align: center;
 }
-
-/* contribution graph & commits */
+.form {
+  width: 60%;
+  align-items: center;
+}
+.form-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 #contribution-graph-window {
-  width: 700px;
+  width: 650px;
   height: 150px;
   margin: 10px;
-
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+#year {
+  cursor: crosshair;
+  margin: 10px;
+  display: flex;
+  align-self: center;
+}
+#contribution-graph-options {
+  display: flex;
+  justify-content: center;
+}
+#draw-options {
+  margin-left: 5px;
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+#draw-options input {
+  cursor: pointer;
+  margin: 3px;
+}
+#draw-options label {
+  margin: 3px 5px 3px 0px;
+}
+#schedule-output {
+  /* display: none; */
+  width: 80%;
+  height: 100px;
+  margin: 25px;
+  padding: 1em;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-#year {
-  margin: 10px;
 
-  display: flex;
-}
 .commit-0 {
   width: 8px;
   height: 8px;
   margin: 2px 1px;
-
   border: 1px solid #dcdee2;
   background-color: #e8eaee;
   border-radius: 2px;
@@ -65,7 +90,6 @@ input {
   width: 8px;
   height: 8px;
   margin: 2px 1px;
-
   border: 1px solid #8adb97;
   background-color: #72e69e;
   border-radius: 2px;
@@ -74,7 +98,6 @@ input {
   width: 8px;
   height: 8px;
   margin: 2px 1px;
-
   border: 1px solid #37b355;
   background-color: #38bc58;
   border-radius: 2px;
@@ -83,7 +106,6 @@ input {
   width: 8px;
   height: 8px;
   margin: 2px 1px;
-
   border: 1px solid #2a9043;
   background-color: #2a9745;
   border-radius: 2px;
@@ -92,42 +114,7 @@ input {
   width: 8px;
   height: 8px;
   margin: 2px 1px;
-
   border: 1px solid #1e6332;
   background-color: #1e5f31;
   border-radius: 2px;
-}
-
-#contribution-graph-window {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-#year {
-  align-self: center;
-}
-
-#contribution-graph-options {
-  display: flex;
-
-  padding: 0 2rem;
-}
-
-#draw-options {
-  display: flex;
-  align-items: center;
-  align-content: center;
-}
-
-#schedule-output {
-  /* display: none; */
-
-  width: 80%;
-  height: 100px;
-  margin: 25px;
-  padding: 1em;
-
-  border: 1px solid #ccc;
-  border-radius: 5px;
 }
