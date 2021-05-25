@@ -1,7 +1,7 @@
 window.onload = () => {
-  // remove and replace initGraph once graph state function fully developed
-  GraphStateCtrl.initGraph(0);
-  UICtrl.drawGraph()
+  // remove and replace initGraphState once graph state function fully developed
+  GraphStateCtrl.initGraphState(0);
+  UICtrl.renderGraph()
 }
 
 //// HOLDS THE CURRENT STATE INFORMATION REGARDING THE GRAPH
@@ -10,22 +10,22 @@ const GraphStateCtrl = (function() {
 
   // TO DO:
   // ON PAGE LOAD - (function() {if(localStorage.graphState = something) {load from local} else {init at 0}})
-  // function drawGraphStateFromUsername(GithubUsername) {update state as graph from username}
+  // function renderGraphStateFromUsername(GithubUsername) {update state as graph from username}
 
-  let initGraph = (val) => {
+  let initGraphState = (val) => {
     for(i=1; i<=52; i++) {
       _graphState[`week${i}`] = [val, val, val, val, val, val, val];
     };
   };
 
-  let updateState = (week, day, newVal) => {
+  let updateGraphState = (week, day, newVal) => {
     _graphState[week][day] = newVal;
   }
 
   return {
     graphState: _graphState,
-    initGraph: initGraph,
-    updateState: updateState
+    initGraphState: initGraphState,
+    updateGraphState: updateGraphState
   }
 })();
 
@@ -36,7 +36,7 @@ const UICtrl = (function() {
   const textForm = document.getElementById("text-form");
   const textField = document.getElementById("text-field");
 
-  const graphClearButton = document.getElementById("clear-button");
+  const clearGraphButton = document.getElementById("clear-button");
   const logGraphStateButton = document.getElementById("log-graphState");
   const drawRadioOption = document.getElementById("draw-option");
   const eraseRadioOption = document.getElementById("erase-option");
@@ -48,7 +48,7 @@ const UICtrl = (function() {
   // userNameInput.addeventlistener('submit', function(e){console.log(e.target.value); e.target.value = '';})
   // scheduleRequest.addeventlistener('submit', renderSchedule(Schedule))
 
-  let drawGraph = () => {
+  let renderGraph = () => {
     // deletes graph if already present
     if(contributionGraph.hasChildNodes()) {
       while(contributionGraph.firstChild) {
@@ -72,10 +72,10 @@ const UICtrl = (function() {
     };
   }
 
-  let graphClear = (event) => {
+  let clearGraph = (event) => {
     event.preventDefault()
-    GraphStateCtrl.initGraph(0);
-    drawGraph();
+    GraphStateCtrl.initGraphState(0);
+    renderGraph();
   }
 
   // update to include change in color over time held
@@ -99,21 +99,21 @@ const UICtrl = (function() {
     }
   }
   // not very nice code due to repetition but I think it is clearer in proceeding code compared to an object holding these values
+  
+  let isDrawing = false;
+  let isDrawingSwitch = () => isDrawing = !isDrawing;
 
-  let mouseDownUpDraw = () => {
-    drawHandler();
+  let mouseDownUpDraw = (event) => {
+    isDrawingSwitch();
     drawEraseFull(event);
   }
   let mouseOverDraw = (event) => {
     drawEraseFull(event);
   }
 
-  let draw = false;
-  let drawHandler = () => draw = !draw;
-
   let drawEraseFull = (event) => {
     let currentCommitValue = parseInt(event.target.className.charAt(7));
-    if(drawSwitch && draw) {
+    if(drawSwitch && isDrawing) {
       if(event.target.className === "commit-4" && event.type === "mousedown") {
         event.target.className = "commit-0";
         updateGraphState(event);
@@ -123,12 +123,12 @@ const UICtrl = (function() {
           updateGraphState(event);
         }
       };
-    } else if(eraseSwitch && draw) {
+    } else if(eraseSwitch && isDrawing) {
       if(currentCommitValue > 0) {
         event.target.className = "commit-0";
         updateGraphState(event);
       }
-    } else if(fullSwitch && draw ) {
+    } else if(fullSwitch && isDrawing) {
       if(currentCommitValue < 4) {
         event.target.className = "commit-4";
         updateGraphState(event);
@@ -140,7 +140,7 @@ const UICtrl = (function() {
     let weekToUpdate = event.target.parentNode.id;
     let dayToUpdate = event.target.id;
     let updatedVal = parseInt(event.target.className.charAt(7));
-    GraphStateCtrl.updateState(weekToUpdate, dayToUpdate, updatedVal);
+    GraphStateCtrl.updateGraphState(weekToUpdate, dayToUpdate, updatedVal);
   }
 
   let customTextSubmitted = (event) => {
@@ -156,7 +156,7 @@ const UICtrl = (function() {
   contributionGraph.addEventListener("mousedown", mouseDownUpDraw);
   contributionGraph.addEventListener("mouseover", mouseOverDraw);
 
-  graphClearButton.addEventListener("click", graphClear);
+  clearGraphButton.addEventListener("click", clearGraph);
   logGraphStateButton.addEventListener("click", () => console.log(GraphStateCtrl.graphState));
 
   drawRadioOption.addEventListener("mouseup", drawOptionSwitcher);
@@ -164,7 +164,7 @@ const UICtrl = (function() {
   fullRadioOption.addEventListener("mouseup", drawOptionSwitcher);
 
   return {
-    drawGraph: drawGraph
+    renderGraph: renderGraph
   }
 })();
 
