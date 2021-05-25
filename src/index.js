@@ -31,8 +31,12 @@ const UICtrl = (function() {
   const contributionGraph = document.getElementById("year");
   const textForm = document.getElementById("text-form");
   const textField = document.getElementById("text-field");
+
   const graphClearButton = document.getElementById("clear-button");
-  const logGraphState = document.getElementById("log-graphState");
+  const logGraphStateButton = document.getElementById("log-graphState");
+  const drawRadioOption = document.getElementById("draw-option");
+  const eraseRadioOption = document.getElementById("erase-option");
+  const fullRadioOption = document.getElementById("full-option");
 
   // METHODS TO DO
   // (function() {clear/init empty schedule})();
@@ -43,7 +47,7 @@ const UICtrl = (function() {
     drawGraph()
   }
 
-  let drawGraph = (event) => {
+  let drawGraph = () => {
     // deletes graph if already present
     if(contributionGraph.hasChildNodes()) {
       while(contributionGraph.firstChild) {
@@ -70,33 +74,67 @@ const UICtrl = (function() {
   let graphClear = (event) => {
     event.preventDefault()
     GraphStateCtrl.initGraph(0);
-    drawGraph(event);
+    drawGraph();
   }
 
   // update to include change in color over time held
-  // eraser toggle
-  let drawSwitch = false;
 
-  let graphDrawSwitcherOn = (event) => {
-    drawSwitch = !drawSwitch;
-    if(event.target.className === "commit-4") {
-      event.target.className = "commit-0";
-      updateGraphState(event);
-    } else {
-      changeCommitValue(event);
+  let drawSwitch = true;
+  let eraseSwitch = false;
+  let fullSwitch = false;
+  let drawOptionSwitcher = (event) => {
+    let optionToTurnOn = event.target.id.replace('-option', 'Switch');
+    if(optionToTurnOn === "eraseSwitch") {
+      eraseSwitch = true;
+      fullSwitch = false;
+      drawSwitch = false;
+    } else if(optionToTurnOn === "fullSwitch") {
+      fullSwitch = true;
+      eraseSwitch = false;
+      drawSwitch = false;
+    } else if(optionToTurnOn === "drawSwitch") {
+      drawSwitch = true;
+      eraseSwitch = false;
+      fullSwitch = false;
     }
   }
+  // not very nice code due to repetition but I think it is clearer in proceeding code compared to an object holding these values
 
-  let graphDrawSwitcherOff = () => drawSwitch = !drawSwitch
+  let mouseDownUpDraw = () => {
+    drawHandler();
+    drawEraseFull(event);
+  }
 
-  let changeCommitValue = (event) => {
-    if(drawSwitch == true && event.target.className.includes("commit-")) {
-      let currentCommitValue = parseInt(event.target.className.charAt(7));
-      if(currentCommitValue < 4) {
-        event.target.className = `commit-${currentCommitValue + 1}`;
+  let mouseOverDraw = (event) => {
+    drawEraseFull(event);
+  }
+
+  let draw = false;
+  let drawHandler = () => draw = !draw;
+
+  let drawEraseFull = (event) => {
+    let currentCommitValue = parseInt(event.target.className.charAt(7));
+    if(drawSwitch === true && draw === true) {
+      if(event.target.className === "commit-4" && event.type === "mousedown") {
+        event.target.className = "commit-0";
+        updateGraphState(event);
+      } else if (event.target.className.includes("commit-")) {
+        if(currentCommitValue < 4) {
+          event.target.className = `commit-${currentCommitValue + 1}`;
+          updateGraphState(event);
+        }
+      };
+    } else if(eraseSwitch === true && draw === true) {
+      if(currentCommitValue > 0) {
+        event.target.className = "commit-0";
         updateGraphState(event);
       }
-    };
+    } else if(fullSwitch === true && draw === true) {
+      if(currentCommitValue < 4) {
+        event.target.className = "commit-4";
+        updateGraphState(event);
+      }
+    }
   }
 
   let updateGraphState = (event) => {
@@ -114,11 +152,17 @@ const UICtrl = (function() {
 
   // EVENT LISTENERS
   textForm.addEventListener("submit", customTextSubmitted);
-  contributionGraph.addEventListener("mouseover", changeCommitValue);
-  contributionGraph.addEventListener("mousedown", graphDrawSwitcherOn);
-  contributionGraph.addEventListener("mouseup", graphDrawSwitcherOff);
+
+  contributionGraph.addEventListener("mouseup", mouseDownUpDraw);
+  contributionGraph.addEventListener("mousedown", mouseDownUpDraw);
+  contributionGraph.addEventListener("mouseover", mouseOverDraw);
+
   graphClearButton.addEventListener("click", graphClear);
-  logGraphState.addEventListener("click", () => console.log(GraphStateCtrl.graphState))
+  logGraphStateButton.addEventListener("click", () => console.log(GraphStateCtrl.graphState));
+
+  drawRadioOption.addEventListener("mouseup", drawOptionSwitcher);
+  eraseRadioOption.addEventListener("mouseup", drawOptionSwitcher);
+  fullRadioOption.addEventListener("mouseup", drawOptionSwitcher);
   // userNameInput.addeventlistener('submit', function(e){console.log(e.target.value); e.target.value = '';})
   // scheduleRequest.addeventlistener('submit', renderSchedule(Schedule))
 })();
