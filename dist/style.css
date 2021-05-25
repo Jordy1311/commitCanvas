@@ -98,6 +98,28 @@ input {
   border-radius: 2px;
 }
 
+#contribution-graph-window {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#year {
+  align-self: center;
+}
+
+#contribution-graph-options {
+  display: flex;
+
+  padding: 0 2rem;
+}
+
+#draw-options {
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+
 #schedule-output {
   /* display: none; */
 

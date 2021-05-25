@@ -45,8 +45,19 @@
 
       <div id="contribution-graph-window">
         <div id="year"></div>
-        <input id="clear-button" type="submit" class="button primary" value="Clear">
-        <input id="log-graphState" type="submit" class="button primary" value="Log graphState">
+        <div id="contribution-graph-options">
+          <input id="clear-button" type="submit" class="button primary" value="Clear">
+          <input id="log-graphState" type="submit" class="button primary" value="Log graphState">
+
+          <div id="draw-options">
+            <input type="radio" id="draw-option" name="draw-options" value="draw" checked>
+            <label for="draw">Draw</label><br>
+            <input type="radio" id="erase-option" name="draw-options" value="erase">
+            <label for="erase">Erase</label><br>
+            <input type="radio" id="full-option" name="draw-options" value="full">
+            <label for="full">Full</label>
+          </div>
+        </div>
       </div>
 
       <a href="#">advanced <i class="fas fa-caret-down"></i></a>
