@@ -37,10 +37,13 @@ const UICtrl = (function() {
   const textField = document.getElementById("text-field");
 
   const clearGraphButton = document.getElementById("clear-button");
+  const fillGraphButton = document.getElementById("fill-button");
   const logGraphStateButton = document.getElementById("log-graphState");
-  const drawRadioOption = document.getElementById("draw-option");
+
+  const normalRadioOption = document.getElementById("normal-option");
   const eraseRadioOption = document.getElementById("erase-option");
-  const fullRadioOption = document.getElementById("full-option");
+  const darkRadioOption = document.getElementById("dark-option");
+
 
   // TO DO:
   // (function() {clear/init empty schedule})();
@@ -78,11 +81,17 @@ const UICtrl = (function() {
     renderGraph();
   }
 
+  let fillGraph = (event) => {
+    event.preventDefault()
+    GraphStateCtrl.initGraphState(4);
+    renderGraph();
+  }
+
   // update to include change in color over time held
   let drawSwitch = true;
   let eraseSwitch = false;
   let fullSwitch = false;
-  let drawOptionSwitcher = (event) => {
+  let paintOptionSwitcher = (event) => {
     let optionToTurnOn = event.target.id.replace('-option', 'Switch');
     if(optionToTurnOn === "eraseSwitch") {
       eraseSwitch = true;
@@ -156,12 +165,13 @@ const UICtrl = (function() {
   contributionGraph.addEventListener("mousedown", mouseDownUpDraw);
   contributionGraph.addEventListener("mouseover", mouseOverDraw);
 
-  clearGraphButton.addEventListener("click", clearGraph);
+  clearGraphButton.addEventListener("mouseup", clearGraph);
+  fillGraphButton.addEventListener("mouseup", fillGraph);
   logGraphStateButton.addEventListener("click", () => console.log(GraphStateCtrl.graphState));
-
-  drawRadioOption.addEventListener("mouseup", drawOptionSwitcher);
-  eraseRadioOption.addEventListener("mouseup", drawOptionSwitcher);
-  fullRadioOption.addEventListener("mouseup", drawOptionSwitcher);
+  
+  normalRadioOption.addEventListener("mouseup", paintOptionSwitcher);
+  eraseRadioOption.addEventListener("mouseup", paintOptionSwitcher);
+  darkRadioOption.addEventListener("mouseup", paintOptionSwitcher);
 
   return {
     renderGraph: renderGraph

@@ -55,18 +55,21 @@ input {
   display: flex;
   justify-content: center;
 }
-#draw-options {
+#paint-options {
   margin-left: 5px;
   display: flex;
   align-items: center;
   align-content: center;
 }
-#draw-options input {
+#paint-options input {
   cursor: pointer;
   margin: 3px;
 }
-#draw-options label {
+#paint-options label {
   margin: 3px 5px 3px 0px;
+}
+#log-graphState {
+  align-self: end;
 }
 #schedule-output {
   /* display: none; */
