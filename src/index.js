@@ -2,7 +2,7 @@
 const GraphStateCtrl = (function() {
   let _graphState = {};
 
-  // METHODS TO DO
+  // TO DO:
   // ON PAGE LOAD - (function() {if(localStorage.graphState = something) {load from local} else {init at 0}})
   // function drawGraphStateFromUsername(GithubUsername) {update state as graph from username}
 
@@ -38,11 +38,12 @@ const UICtrl = (function() {
   const eraseRadioOption = document.getElementById("erase-option");
   const fullRadioOption = document.getElementById("full-option");
 
-  // METHODS TO DO
+  // TO DO:
   // (function() {clear/init empty schedule})();
   // function renderSchedule (Schedule) {render schedule}
+  // userNameInput.addeventlistener('submit', function(e){console.log(e.target.value); e.target.value = '';})
+  // scheduleRequest.addeventlistener('submit', renderSchedule(Schedule))
 
-  // inits graph
   window.onload = () => {
     drawGraph()
   }
@@ -78,7 +79,6 @@ const UICtrl = (function() {
   }
 
   // update to include change in color over time held
-
   let drawSwitch = true;
   let eraseSwitch = false;
   let fullSwitch = false;
@@ -104,7 +104,6 @@ const UICtrl = (function() {
     drawHandler();
     drawEraseFull(event);
   }
-
   let mouseOverDraw = (event) => {
     drawEraseFull(event);
   }
@@ -163,13 +162,11 @@ const UICtrl = (function() {
   drawRadioOption.addEventListener("mouseup", drawOptionSwitcher);
   eraseRadioOption.addEventListener("mouseup", drawOptionSwitcher);
   fullRadioOption.addEventListener("mouseup", drawOptionSwitcher);
-  // userNameInput.addeventlistener('submit', function(e){console.log(e.target.value); e.target.value = '';})
-  // scheduleRequest.addeventlistener('submit', renderSchedule(Schedule))
 })();
 
 
 //// RESPONSIBLE FOR GENERATING THE SCHEDULE UPON REQUEST
 const ScheduleCtrl = (function() {
-  // METHODS TO DO
+  // TO DO:
   // function createSchedule(graphState) {creates schedule}
 })();
