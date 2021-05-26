@@ -114,15 +114,16 @@ const UICtrl = (function() {
 
   let mouseDownUpDraw = (event) => {
     isDrawingSwitch();
-    drawEraseFull(event);
+    paint(event);
   }
   let mouseOverDraw = (event) => {
-    drawEraseFull(event);
+    paint(event);
+  }
   let leftDrawArea = () => {
     isDrawing = false;
   }
 
-  let drawEraseFull = (event) => {
+  let paint = (event) => {
     let currentCommitValue = parseInt(event.target.className.charAt(7));
     if(drawSwitch && isDrawing) {
       if(event.target.className === "commit-4" && event.type === "mousedown") {
