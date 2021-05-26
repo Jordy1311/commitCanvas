@@ -1,49 +1,57 @@
+window.onload = () => {
+  // remove and replace initGraphState once graph state function fully developed
+  GraphStateCtrl.initGraphState(0);
+  UICtrl.renderGraph()
+}
+
 //// HOLDS THE CURRENT STATE INFORMATION REGARDING THE GRAPH
 const GraphStateCtrl = (function() {
   let _graphState = {};
 
-  // METHODS TO DO
+  // TO DO:
   // ON PAGE LOAD - (function() {if(localStorage.graphState = something) {load from local} else {init at 0}})
-  // function drawGraphStateFromUsername(GithubUsername) {update state as graph from username}
+  // function renderGraphStateFromUsername(GithubUsername) {update state as graph from username}
 
-  let initGraph = (val) => {
+  let initGraphState = (val) => {
     for(i=1; i<=52; i++) {
       _graphState[`week${i}`] = [val, val, val, val, val, val, val];
     };
   };
 
-  let updateState = (week, day, newVal) => {
+  let updateGraphState = (week, day, newVal) => {
     _graphState[week][day] = newVal;
   }
 
   return {
     graphState: _graphState,
-    initGraph: initGraph,
-    updateState: updateState
+    initGraphState: initGraphState,
+    updateGraphState: updateGraphState
   }
 })();
 
-// remove and replace once graph state function fully developed
-GraphStateCtrl.initGraph(0);
 
 //// RESPONSIBLE FOR WATCHING AND RENDERING ELEMENTS IN THE UI
 const UICtrl = (function() {
   const contributionGraph = document.getElementById("year");
-  const textForm = document.getElementById("text-form");
+  const textFieldSubmitButton = document.getElementById("text-form");
   const textField = document.getElementById("text-field");
-  const graphClearButton = document.getElementById("clear-button");
-  const logGraphState = document.getElementById("log-graphState");
 
-  // METHODS TO DO
+  const clearGraphButton = document.getElementById("clear-button");
+  const fillGraphButton = document.getElementById("fill-button");
+  const logGraphStateButton = document.getElementById("log-graphState");
+
+  const normalRadioOption = document.getElementById("normal-option");
+  const eraseRadioOption = document.getElementById("erase-option");
+  const darkRadioOption = document.getElementById("dark-option");
+
+
+  // TO DO:
   // (function() {clear/init empty schedule})();
   // function renderSchedule (Schedule) {render schedule}
+  // userNameInput.addeventlistener('submit', function(e){console.log(e.target.value); e.target.value = '';})
+  // scheduleRequest.addeventlistener('submit', renderSchedule(Schedule))
 
-  // inits graph
-  window.onload = () => {
-    drawGraph()
-  }
-
-  let drawGraph = (event) => {
+  let renderGraph = () => {
     // deletes graph if already present
     if(contributionGraph.hasChildNodes()) {
       while(contributionGraph.firstChild) {
@@ -67,65 +75,112 @@ const UICtrl = (function() {
     };
   }
 
-  let graphClear = (event) => {
+  let clearGraph = (event) => {
     event.preventDefault()
-    GraphStateCtrl.initGraph(0);
-    drawGraph(event);
+    GraphStateCtrl.initGraphState(0);
+    renderGraph();
   }
 
-  // update to include change in color over time held
-  // eraser toggle
-  let drawSwitch = false;
+  let fillGraph = (event) => {
+    event.preventDefault()
+    GraphStateCtrl.initGraphState(4);
+    renderGraph();
+  }
 
-  let graphDrawSwitcherOn = (event) => {
-    drawSwitch = !drawSwitch;
-    if(event.target.className === "commit-4") {
-      event.target.className = "commit-0";
-      updateGraphState(event);
-    } else {
-      changeCommitValue(event);
+  // drawMode switch
+  const NORMAL = "normal", ERASE = "erase", DARK = "dark";
+  let drawMode = NORMAL;
+  let drawModeSwitch = (newDrawMode) => {
+    drawMode = newDrawMode;
+  }
+  // isDrawing switch
+  let isDrawing = false;
+  let isDrawingSwitch = () => isDrawing = !isDrawing
+
+  // draw behaviour functions
+  let mouseDownUpDraw = (event) => {
+    isDrawingSwitch();
+    draw(event);
+  }
+  let mouseOverDraw = (event) => {
+    draw(event);
+  }
+  let leftDrawArea = () => {
+    isDrawing = false;
+  }
+  let enteredDrawArea = (event) => {
+    // if statement required to check if left-mouse is being clicked
+    if(event.buttons === 1) {
+      isDrawing = true;
     }
   }
 
-  let graphDrawSwitcherOff = () => drawSwitch = !drawSwitch
-
-  let changeCommitValue = (event) => {
-    if(drawSwitch == true && event.target.className.includes("commit-")) {
-      let currentCommitValue = parseInt(event.target.className.charAt(7));
-      if(currentCommitValue < 4) {
-        event.target.className = `commit-${currentCommitValue + 1}`;
+  let draw = (event) => {
+    const cubeFillValue = parseInt(event.target.className.charAt(7));
+    if(isDrawing && drawMode === NORMAL) {
+      if(cubeFillValue === "4" && event.type === "mousedown") {
+        event.target.className = "commit-0";
+        updateGraphState(event);
+      } else if (event.target.className.includes("commit-")) {
+        if(cubeFillValue < 4) {
+          event.target.className = `commit-${cubeFillValue + 1}`;
+          updateGraphState(event);
+        }
+      };
+    } else if(isDrawing && drawMode === ERASE) {
+      if(cubeFillValue > 0) {
+        event.target.className = "commit-0";
         updateGraphState(event);
       }
-    };
+    } else if(isDrawing && drawMode === DARK) {
+      if(cubeFillValue < 4) {
+        event.target.className = "commit-4";
+        updateGraphState(event);
+      }
+    }
   }
 
   let updateGraphState = (event) => {
     let weekToUpdate = event.target.parentNode.id;
     let dayToUpdate = event.target.id;
     let updatedVal = parseInt(event.target.className.charAt(7));
-    GraphStateCtrl.updateState(weekToUpdate, dayToUpdate, updatedVal);
+    GraphStateCtrl.updateGraphState(weekToUpdate, dayToUpdate, updatedVal);
   }
 
   let customTextSubmitted = (event) => {
-    console.log(textField.value);
-    textField.value = "";
     event.preventDefault();
+    if(textField.value) {
+      console.log(textField.value);
+      textField.value = "";
+    }
   };
 
   // EVENT LISTENERS
-  textForm.addEventListener("submit", customTextSubmitted);
-  contributionGraph.addEventListener("mouseover", changeCommitValue);
-  contributionGraph.addEventListener("mousedown", graphDrawSwitcherOn);
-  contributionGraph.addEventListener("mouseup", graphDrawSwitcherOff);
-  graphClearButton.addEventListener("click", graphClear);
-  logGraphState.addEventListener("click", () => console.log(GraphStateCtrl.graphState))
-  // userNameInput.addeventlistener('submit', function(e){console.log(e.target.value); e.target.value = '';})
-  // scheduleRequest.addeventlistener('submit', renderSchedule(Schedule))
+  textFieldSubmitButton.addEventListener("submit", customTextSubmitted);
+
+  contributionGraph.addEventListener("mouseup", mouseDownUpDraw);
+  contributionGraph.addEventListener("mousedown", mouseDownUpDraw);
+  contributionGraph.addEventListener("mouseover", mouseOverDraw);
+  contributionGraph.addEventListener("mouseleave", leftDrawArea);
+  contributionGraph.addEventListener("mouseenter", enteredDrawArea);
+
+  clearGraphButton.addEventListener("click", clearGraph);
+  fillGraphButton.addEventListener("click", fillGraph);
+
+  logGraphStateButton.addEventListener("click", () => console.log(GraphStateCtrl.graphState));
+  
+  normalRadioOption.addEventListener("click", () => drawModeSwitch(NORMAL));
+  eraseRadioOption.addEventListener("click", () => drawModeSwitch(ERASE));
+  darkRadioOption.addEventListener("click", () => drawModeSwitch(DARK));
+
+  return {
+    renderGraph: renderGraph
+  }
 })();
 
 
 //// RESPONSIBLE FOR GENERATING THE SCHEDULE UPON REQUEST
 const ScheduleCtrl = (function() {
-  // METHODS TO DO
+  // TO DO:
   // function createSchedule(graphState) {creates schedule}
 })();

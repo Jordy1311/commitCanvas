@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -17,8 +18,9 @@
     <link rel="stylesheet" href="style.css" />
     <title>commitCanvas</title>
   </head>
+
   <body>
-    <div class="u-full-width flex-header">
+    <div id="header" class="u-full-width">
       <a href="#">help <i class="far fa-question-circle"></i></a>
     </div>
 
@@ -30,8 +32,8 @@
         contribution graph
       </h5>
 
-      <form class="flex-form" id="text-form">
-        <div class="flex-form">
+      <form class="form" id="text-form">
+        <div class="form-items">
           <label for="custom-message">art goes here</label>
           <input
             class="u-full-width"
@@ -45,8 +47,21 @@
 
       <div id="contribution-graph-window">
         <div id="year"></div>
-        <input id="clear-button" type="submit" class="button primary" value="Clear">
-        <input id="log-graphState" type="submit" class="button primary" value="Log graphState">
+        <div id="contribution-graph-options">
+          <input id="clear-button" type="submit" class="button" value="Clear">
+          <input id="fill-button" type="submit" class="button" value="Fill">
+          
+          <div id="paint-options">
+            <input type="radio" id="normal-option" name="paint-options" value="normal" checked>
+            <label for="normal">Normal</label><br>
+            <input type="radio" id="erase-option" name="paint-options" value="erase">
+            <label for="erase">Erase</label><br>
+            <input type="radio" id="dark-option" name="paint-options" value="dark">
+            <label for="dark">Dark</label>
+          </div>
+          
+          <input id="log-graphState" type="submit" class="button" value="Log graphState">
+        </div>
       </div>
 
       <a href="#">advanced <i class="fas fa-caret-down"></i></a>
@@ -72,5 +87,6 @@
     </div>
 
     <script src="main.js"></script>
+
   </body>
 </html>
