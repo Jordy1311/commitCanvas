@@ -88,45 +88,30 @@ const UICtrl = (function() {
   }
 
   // update to include change in color over time held
-  let drawSwitch = true;
-  let eraseSwitch = false;
-  let fullSwitch = false;
-  let paintOptionSwitcher = (event) => {
-    let optionToTurnOn = event.target.id.replace('-option', 'Switch');
-    if(optionToTurnOn === "eraseSwitch") {
-      eraseSwitch = true;
-      fullSwitch = false;
-      drawSwitch = false;
-    } else if(optionToTurnOn === "fullSwitch") {
-      fullSwitch = true;
-      eraseSwitch = false;
-      drawSwitch = false;
-    } else if(optionToTurnOn === "drawSwitch") {
-      drawSwitch = true;
-      eraseSwitch = false;
-      fullSwitch = false;
-    }
+  const NORMAL = "normal", ERASE = "erase", DARK = "dark";
+  let drawMode = NORMAL;
+  let drawModeSwitch = (newDrawMode) => {
+    drawMode = newDrawMode;
   }
-  // not very nice code due to repetition but I think it is clearer in proceeding code compared to an object holding these values
-  
+
   let isDrawing = false;
-  let isDrawingSwitch = () => isDrawing = !isDrawing;
+  let isDrawingSwitch = () => isDrawing = !isDrawing
 
   let mouseDownUpDraw = (event) => {
     isDrawingSwitch();
-    paint(event);
+    draw(event);
   }
   let mouseOverDraw = (event) => {
-    paint(event);
+    draw(event);
   }
   let leftDrawArea = () => {
     isDrawing = false;
   }
 
-  let paint = (event) => {
+  let draw = (event) => {
     let currentCommitValue = parseInt(event.target.className.charAt(7));
-    if(drawSwitch && isDrawing) {
-      if(event.target.className === "commit-4" && event.type === "mousedown") {
+    if(isDrawing && drawMode === NORMAL) {
+      if(currentCommitValue === "4" && event.type === "mousedown") {
         event.target.className = "commit-0";
         updateGraphState(event);
       } else if (event.target.className.includes("commit-")) {
@@ -135,12 +120,12 @@ const UICtrl = (function() {
           updateGraphState(event);
         }
       };
-    } else if(eraseSwitch && isDrawing) {
+    } else if(isDrawing && drawMode === ERASE) {
       if(currentCommitValue > 0) {
         event.target.className = "commit-0";
         updateGraphState(event);
       }
-    } else if(fullSwitch && isDrawing) {
+    } else if(isDrawing && drawMode === DARK) {
       if(currentCommitValue < 4) {
         event.target.className = "commit-4";
         updateGraphState(event);
@@ -169,13 +154,13 @@ const UICtrl = (function() {
   contributionGraph.addEventListener("mouseleave", leftDrawArea);
   contributionGraph.addEventListener("mouseover", mouseOverDraw);
 
-  clearGraphButton.addEventListener("mouseup", clearGraph);
-  fillGraphButton.addEventListener("mouseup", fillGraph);
+  clearGraphButton.addEventListener("click", clearGraph);
+  fillGraphButton.addEventListener("click", fillGraph);
   logGraphStateButton.addEventListener("click", () => console.log(GraphStateCtrl.graphState));
   
-  normalRadioOption.addEventListener("mouseup", paintOptionSwitcher);
-  eraseRadioOption.addEventListener("mouseup", paintOptionSwitcher);
-  darkRadioOption.addEventListener("mouseup", paintOptionSwitcher);
+  normalRadioOption.addEventListener("click", () => drawModeSwitch(NORMAL));
+  eraseRadioOption.addEventListener("click", () => drawModeSwitch(ERASE));
+  darkRadioOption.addEventListener("click", () => drawModeSwitch(DARK));
 
   return {
     renderGraph: renderGraph
