@@ -118,6 +118,8 @@ const UICtrl = (function() {
   }
   let mouseOverDraw = (event) => {
     drawEraseFull(event);
+  let leftDrawArea = () => {
+    isDrawing = false;
   }
 
   let drawEraseFull = (event) => {
@@ -163,6 +165,7 @@ const UICtrl = (function() {
 
   contributionGraph.addEventListener("mouseup", mouseDownUpDraw);
   contributionGraph.addEventListener("mousedown", mouseDownUpDraw);
+  contributionGraph.addEventListener("mouseleave", leftDrawArea);
   contributionGraph.addEventListener("mouseover", mouseOverDraw);
 
   clearGraphButton.addEventListener("mouseup", clearGraph);
