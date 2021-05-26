@@ -33,7 +33,7 @@ const GraphStateCtrl = (function() {
 //// RESPONSIBLE FOR WATCHING AND RENDERING ELEMENTS IN THE UI
 const UICtrl = (function() {
   const contributionGraph = document.getElementById("year");
-  const textForm = document.getElementById("text-form");
+  const textFieldSubmitButton = document.getElementById("text-form");
   const textField = document.getElementById("text-field");
 
   const clearGraphButton = document.getElementById("clear-button");
@@ -87,16 +87,17 @@ const UICtrl = (function() {
     renderGraph();
   }
 
-  // update to include change in color over time held
+  // drawMode switch
   const NORMAL = "normal", ERASE = "erase", DARK = "dark";
   let drawMode = NORMAL;
   let drawModeSwitch = (newDrawMode) => {
     drawMode = newDrawMode;
   }
-
+  // isDrawing switch
   let isDrawing = false;
   let isDrawingSwitch = () => isDrawing = !isDrawing
 
+  // draw behaviour functions
   let mouseDownUpDraw = (event) => {
     isDrawingSwitch();
     draw(event);
@@ -115,24 +116,24 @@ const UICtrl = (function() {
   }
 
   let draw = (event) => {
-    let currentCommitValue = parseInt(event.target.className.charAt(7));
+    const cubeFillValue = parseInt(event.target.className.charAt(7));
     if(isDrawing && drawMode === NORMAL) {
-      if(currentCommitValue === "4" && event.type === "mousedown") {
+      if(cubeFillValue === "4" && event.type === "mousedown") {
         event.target.className = "commit-0";
         updateGraphState(event);
       } else if (event.target.className.includes("commit-")) {
-        if(currentCommitValue < 4) {
-          event.target.className = `commit-${currentCommitValue + 1}`;
+        if(cubeFillValue < 4) {
+          event.target.className = `commit-${cubeFillValue + 1}`;
           updateGraphState(event);
         }
       };
     } else if(isDrawing && drawMode === ERASE) {
-      if(currentCommitValue > 0) {
+      if(cubeFillValue > 0) {
         event.target.className = "commit-0";
         updateGraphState(event);
       }
     } else if(isDrawing && drawMode === DARK) {
-      if(currentCommitValue < 4) {
+      if(cubeFillValue < 4) {
         event.target.className = "commit-4";
         updateGraphState(event);
       }
@@ -147,13 +148,15 @@ const UICtrl = (function() {
   }
 
   let customTextSubmitted = (event) => {
-    console.log(textField.value);
-    textField.value = "";
     event.preventDefault();
+    if(textField.value) {
+      console.log(textField.value);
+      textField.value = "";
+    }
   };
 
   // EVENT LISTENERS
-  textForm.addEventListener("submit", customTextSubmitted);
+  textFieldSubmitButton.addEventListener("submit", customTextSubmitted);
 
   contributionGraph.addEventListener("mouseup", mouseDownUpDraw);
   contributionGraph.addEventListener("mousedown", mouseDownUpDraw);
@@ -163,6 +166,7 @@ const UICtrl = (function() {
 
   clearGraphButton.addEventListener("click", clearGraph);
   fillGraphButton.addEventListener("click", fillGraph);
+
   logGraphStateButton.addEventListener("click", () => console.log(GraphStateCtrl.graphState));
   
   normalRadioOption.addEventListener("click", () => drawModeSwitch(NORMAL));

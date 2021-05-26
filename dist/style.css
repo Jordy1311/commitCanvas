@@ -60,6 +60,7 @@ input {
   display: flex;
   align-items: center;
   align-content: center;
+  user-select: none;
 }
 #paint-options input {
   cursor: pointer;
