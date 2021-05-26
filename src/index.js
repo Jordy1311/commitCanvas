@@ -107,6 +107,12 @@ const UICtrl = (function() {
   let leftDrawArea = () => {
     isDrawing = false;
   }
+  let enteredDrawArea = (event) => {
+    // if statement required to check if left-mouse is being clicked
+    if(event.buttons === 1) {
+      isDrawing = true;
+    }
+  }
 
   let draw = (event) => {
     let currentCommitValue = parseInt(event.target.className.charAt(7));
@@ -151,8 +157,9 @@ const UICtrl = (function() {
 
   contributionGraph.addEventListener("mouseup", mouseDownUpDraw);
   contributionGraph.addEventListener("mousedown", mouseDownUpDraw);
-  contributionGraph.addEventListener("mouseleave", leftDrawArea);
   contributionGraph.addEventListener("mouseover", mouseOverDraw);
+  contributionGraph.addEventListener("mouseleave", leftDrawArea);
+  contributionGraph.addEventListener("mouseenter", enteredDrawArea);
 
   clearGraphButton.addEventListener("click", clearGraph);
   fillGraphButton.addEventListener("click", fillGraph);
