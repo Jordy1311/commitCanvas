@@ -1,3 +1,6 @@
+let moment = require('moment');
+const { format } = require('prettier');
+
 window.onload = () => {
   // remove and replace initGraphState once graph state function fully developed
   GraphStateCtrl.initGraphState(0);
@@ -204,6 +207,45 @@ const UICtrl = (function () {
 
 //// RESPONSIBLE FOR GENERATING THE SCHEDULE UPON REQUEST
 const ScheduleCtrl = (function () {
-  // TO DO:
-  // function createSchedule(graphState) {creates schedule}
+  let _schedule = {};
+  
+  let generateDate = (offset) => {
+    let date = moment();
+    if (offset > 0) {
+      date.add(offset, "days");
+    }
+    return date.calendar(null, {
+      sameDay: '[Today]',
+      nextDay: '[Tomorrow]',
+      nextWeek: '[This coming] dddd',
+      sameElse: 'Do MMM YYYY'
+    });
+  }
+  
+  let createSchedule = (graphState) => {
+    let _schedule = {};
+    let dayOffset = 0;
+
+    // iterate through graphState (year)
+    for (let WeekID in graphState) {
+      let weekArray = graphState[WeekID];
+
+      // iterate through week's values
+      weekArray.forEach(dayValue => {
+        if (dayValue > 0) {
+          _schedule[generateDate(dayOffset)] = dayValue
+        }
+        dayOffset++;
+      });
+    }
+    
+    console.log(_schedule);
+    
+    // call function to render schedule in UI
+    UICtrl.renderSchedule(_schedule);
+  }
+
+  return {
+    createSchedule: createSchedule
+  }
 })();
