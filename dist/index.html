@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-  
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -46,23 +45,42 @@
       </form>
 
       <div id="contribution-graph-window">
-        <div id="year">
-
-        </div>
+        <div id="year"></div>
         <div id="contribution-graph-options">
-          <input id="clear-button" type="submit" class="button" value="Clear">
-          <input id="fill-button" type="submit" class="button" value="Fill">
-          
+          <input id="clear-button" type="submit" class="button" value="Clear" />
+          <input id="fill-button" type="submit" class="button" value="Fill" />
+
           <div id="paint-options">
-            <input type="radio" id="normal-option" name="paint-options" value="normal" checked>
-            <label for="normal">Normal</label><br>
-            <input type="radio" id="erase-option" name="paint-options" value="erase">
-            <label for="erase">Erase</label><br>
-            <input type="radio" id="dark-option" name="paint-options" value="dark">
+            <input
+              type="radio"
+              id="normal-option"
+              name="paint-options"
+              value="normal"
+              checked
+            />
+            <label for="normal">Normal</label><br />
+            <input
+              type="radio"
+              id="erase-option"
+              name="paint-options"
+              value="erase"
+            />
+            <label for="erase">Erase</label><br />
+            <input
+              type="radio"
+              id="dark-option"
+              name="paint-options"
+              value="dark"
+            />
             <label for="dark">Dark</label>
           </div>
-          
-          <input id="log-graphState" type="submit" class="button" value="Log graphState">
+
+          <input
+            id="log-graphState"
+            type="submit"
+            class="button"
+            value="Log graphState"
+          />
         </div>
       </div>
 
@@ -75,13 +93,10 @@
             <th>number of commits</th>
           </tr>
         </thead>
-        <tbody id="schedule-list">
-
-        </tbody>
+        <tbody id="schedule-list"></tbody>
       </table>
     </div>
 
     <script src="main.js"></script>
-
   </body>
 </html>
