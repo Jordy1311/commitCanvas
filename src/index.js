@@ -34,10 +34,11 @@ const UICtrl = (function () {
   const contributionGraph = document.getElementById("year");
   const textFieldSubmitButton = document.getElementById("text-form");
   const textField = document.getElementById("text-field");
+  const scheduleList = document.getElementById("schedule-list");
 
   const clearGraphButton = document.getElementById("clear-button");
   const fillGraphButton = document.getElementById("fill-button");
-  const logGraphStateButton = document.getElementById("log-graphState");
+  const generateScheduleButton = document.getElementById("generate-schedule-button");
 
   const normalRadioOption = document.getElementById("normal-option");
   const eraseRadioOption = document.getElementById("erase-option");
@@ -147,6 +148,28 @@ const UICtrl = (function () {
     GraphStateCtrl.updateGraphState(weekToUpdate, dayToUpdate, updatedVal);
   };
 
+  let scheduleRequestHandler = () => ScheduleCtrl.createSchedule(GraphStateCtrl.graphState)
+
+  let renderSchedule = (schedule) => {
+    // deletes schedule if already present
+    if (scheduleList.hasChildNodes()) {
+      while (scheduleList.firstChild) {
+        scheduleList.firstChild.remove();
+      }
+    }
+    // draws schedule in UI based off schedule
+    for (let Line in schedule) {
+      const createdLine = document.createElement("tr");
+      const createdLineDate = document.createElement("td");
+      const createdLineCommits = document.createElement("td");
+      createdLineDate.innerHTML = Line;
+      createdLineCommits.innerHTML = `${schedule[Line]} commits`;
+      createdLine.appendChild(createdLineDate);
+      createdLine.appendChild(createdLineCommits);
+      scheduleList.appendChild(createdLine);
+    }
+  }
+
   let customTextSubmitted = (event) => {
     event.preventDefault();
     if (textField.value) {
@@ -156,7 +179,7 @@ const UICtrl = (function () {
   };
 
   // EVENT LISTENERS
-  textFieldSubmitButton.addEventListener("submit", customTextSubmitted);
+  // textFieldSubmitButton.addEventListener("submit", customTextSubmitted);
 
   contributionGraph.addEventListener("mouseup", mouseDownUpDraw);
   contributionGraph.addEventListener("mousedown", mouseDownUpDraw);
@@ -167,9 +190,7 @@ const UICtrl = (function () {
   clearGraphButton.addEventListener("click", clearGraph);
   fillGraphButton.addEventListener("click", fillGraph);
 
-  logGraphStateButton.addEventListener("click", () =>
-    console.log(GraphStateCtrl.graphState)
-  );
+  generateScheduleButton.addEventListener("click", scheduleRequestHandler);
 
   normalRadioOption.addEventListener("click", () => drawModeSwitch(NORMAL));
   eraseRadioOption.addEventListener("click", () => drawModeSwitch(ERASE));
@@ -177,6 +198,7 @@ const UICtrl = (function () {
 
   return {
     renderGraph: renderGraph,
+    renderSchedule: renderSchedule
   };
 })();
 
