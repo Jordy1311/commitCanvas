@@ -72,7 +72,7 @@ input {
 #log-graphState {
   align-self: end;
 }
-#schedule-output {
+#schedule-table {
   /* display: none; */
   width: 80%;
   height: 100px;

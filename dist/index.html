@@ -46,7 +46,9 @@
       </form>
 
       <div id="contribution-graph-window">
-        <div id="year"></div>
+        <div id="year">
+
+        </div>
         <div id="contribution-graph-options">
           <input id="clear-button" type="submit" class="button" value="Clear">
           <input id="fill-button" type="submit" class="button" value="Fill">
@@ -66,22 +68,15 @@
 
       <a href="#">advanced <i class="fas fa-caret-down"></i></a>
 
-      <table id="schedule-output" class="u-full-width">
+      <table id="schedule-table" class="u-full-width">
         <thead>
           <tr>
             <th>date</th>
             <th>number of commits</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>tomorrow</td>
-            <td>5 commits</td>
-          </tr>
-          <tr>
-            <td>tomorrow's tomorrow</td>
-            <td>6 commits</td>
-          </tr>
+        <tbody id="schedule-list">
+
         </tbody>
       </table>
     </div>
