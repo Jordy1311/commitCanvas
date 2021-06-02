@@ -166,7 +166,11 @@ const UICtrl = (function () {
       const createdLineDate = document.createElement("td");
       const createdLineCommits = document.createElement("td");
       createdLineDate.innerHTML = Line;
-      createdLineCommits.innerHTML = `${schedule[Line]} commits`;
+      if(schedule[Line] == 1) {
+        createdLineCommits.innerHTML = `${schedule[Line]} commit`;
+      } else {
+        createdLineCommits.innerHTML = `${schedule[Line]} commits`;
+      }
       createdLine.appendChild(createdLineDate);
       createdLine.appendChild(createdLineCommits);
       scheduleList.appendChild(createdLine);
@@ -215,8 +219,8 @@ const ScheduleCtrl = (function () {
       date.add(offset, "days");
     }
     return date.calendar(null, {
-      sameDay: '[Today]',
-      nextDay: '[Tomorrow]',
+      sameDay: '[Today: ] dddd',
+      nextDay: '[Tomorrow: ] dddd',
       nextWeek: '[This coming] dddd',
       sameElse: 'Do MMM YYYY'
     });
