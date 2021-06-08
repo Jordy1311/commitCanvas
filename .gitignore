@@ -1,4 +1,8 @@
-/node_modules/
+.DS_Store
 
-# ignore build bundle
-/dist/main.js
+/back-end/node_modules/
+/back-end/.DS_Store
+
+/front-end/node_modules/
+/front-end/dist/main.js
+/front-end/.DS_Store
