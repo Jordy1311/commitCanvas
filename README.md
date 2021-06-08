@@ -8,4 +8,6 @@ It's a whole lotta nothing right now but watch this space!
 
 ## Development
 
-View `npm run` to list available commands.
+commitCanvas is currently split over two directories while the back end is in development.
+
+To see the front-end or back-end in action, please navigate to the desired directory and view `npm run` to list the currently available commands.
