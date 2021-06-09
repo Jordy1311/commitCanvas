@@ -32,6 +32,23 @@ const GraphStateCtrl = (function () {
   };
 })();
 
+// RESPONSIBLE FOR MANAGING CONNECTIONS WITH SERVER
+const ClientCtrl = (function () {
+  let requestRepo = () => {
+    fetch("http://localhost:3000/")
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
+    })
+    .catch(error => console.log(`There is an error my good friend!! || ${error}`))
+  }
+
+  return {
+    requestRepo
+  }
+})();
+
+
 //// RESPONSIBLE FOR WATCHING AND RENDERING ELEMENTS IN THE UI
 const UICtrl = (function () {
   const contributionGraph = document.getElementById("year");
@@ -46,6 +63,8 @@ const UICtrl = (function () {
   const normalRadioOption = document.getElementById("normal-option");
   const eraseRadioOption = document.getElementById("erase-option");
   const darkRadioOption = document.getElementById("dark-option");
+
+  const repoRequestButton = document.getElementById("repo-request");
 
   // TO DO:
   // (function() {clear/init empty schedule})();
@@ -151,8 +170,6 @@ const UICtrl = (function () {
     GraphStateCtrl.updateGraphState(weekToUpdate, dayToUpdate, updatedVal);
   };
 
-  let scheduleRequestHandler = () => ScheduleCtrl.createSchedule(GraphStateCtrl.graphState)
-
   let renderSchedule = (schedule) => {
     // deletes schedule if already present
     if (scheduleList.hasChildNodes()) {
@@ -177,13 +194,13 @@ const UICtrl = (function () {
     }
   }
 
-  let customTextSubmitted = (event) => {
-    event.preventDefault();
-    if (textField.value) {
-      console.log(textField.value);
-      textField.value = "";
-    }
-  };
+  // let customTextSubmitted = (event) => {
+  //   event.preventDefault();
+  //   if (textField.value) {
+  //     console.log(textField.value);
+  //     textField.value = "";
+  //   }
+  // };
 
   // EVENT LISTENERS
   // textFieldSubmitButton.addEventListener("submit", customTextSubmitted);
@@ -197,11 +214,13 @@ const UICtrl = (function () {
   clearGraphButton.addEventListener("click", clearGraph);
   fillGraphButton.addEventListener("click", fillGraph);
 
-  generateScheduleButton.addEventListener("click", scheduleRequestHandler);
+  generateScheduleButton.addEventListener("click", () => ScheduleCtrl.createSchedule(GraphStateCtrl.graphState));
 
   normalRadioOption.addEventListener("click", () => drawModeSwitch(NORMAL));
   eraseRadioOption.addEventListener("click", () => drawModeSwitch(ERASE));
   darkRadioOption.addEventListener("click", () => drawModeSwitch(DARK));
+
+  repoRequestButton.addEventListener("click", () => ClientCtrl.requestRepo());
 
   return {
     renderGraph: renderGraph,
