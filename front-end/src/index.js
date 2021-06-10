@@ -34,13 +34,29 @@ const GraphStateCtrl = (function () {
 
 // RESPONSIBLE FOR MANAGING CONNECTIONS WITH SERVER
 const ClientCtrl = (function () {
-  let requestRepo = () => {
-    fetch("http://localhost:3000/")
+  let requestRepo = (data) => {
+    fetch('http://localhost:3000/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
     .then(response => response.text())
     .then(data => {
       console.log(data);
     })
-    .catch(error => console.log(`There is an error my good friend!! || ${error}`))
+    .catch((error) => {
+      console.error('Something went wrong!! ||', error);
+    });
+    
+    
+    // fetch("http://localhost:3000/")
+    // .then(response => response.text())
+    // .then(data => {
+    //   console.log(data);
+    // })
+    // .catch(error => console.log(`There is an error my good friend!! || ${error}`))
   }
 
   return {
@@ -220,7 +236,7 @@ const UICtrl = (function () {
   eraseRadioOption.addEventListener("click", () => drawModeSwitch(ERASE));
   darkRadioOption.addEventListener("click", () => drawModeSwitch(DARK));
 
-  repoRequestButton.addEventListener("click", () => ClientCtrl.requestRepo());
+  repoRequestButton.addEventListener("click", () => ClientCtrl.requestRepo(GraphStateCtrl.graphState));
 
   return {
     renderGraph: renderGraph,
