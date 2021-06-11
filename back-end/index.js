@@ -13,8 +13,6 @@ server.post('/', (request, response) => {
     // SENDS RESPONSE TO CLIENT
     response.send("Thanks!! We received your graph state (^̮^)");
 
-    console.log(response);
-
     // PROCESSES REQUEST BODY (graphState) INTO VARIABLE "committedWeeks"
     let graphState = request.body;
     let committedWeeks = {
@@ -51,20 +49,37 @@ server.post('/', (request, response) => {
             console.log("File created!")
         });
 
-        for (let Week in committedWeeks) {
-            let currentlyEvaluatedWeek = committedWeeks[Week];
-            
-            console.log(typeof currentlyEvaluatedWeek);
-            
-            currentlyEvaluatedWeek.forEach((dayValue) => {
-                if (dayValue > 0) {
-                    fs.appendFile(path.join(__dirname, '/your-art-project', "harry-potter-and-the-prisoner-of-your-mum.txt"), `Heelllooo\n`, error => {
-                        if(error) console.log("ERROR while cycling data/adding to file:", error);
-                    });
-                }
-            })
-            console.log("Dates added to file!!")
+        for (const [week, days] of Object.entries(committedWeeks)) {
+            let currentlyEvaluatedCommittedWeek = committedWeeks[week];
+
+            if(week.includes("week")) {
+                currentlyEvaluatedCommittedWeek.forEach((dayValue) => {
+                    if (dayValue > 0) {
+                        fs.appendFile(path.join(__dirname, '/your-art-project', "harry-potter-and-the-prisoner-of-your-mum.txt"), `${week} day${currentlyEvaluatedCommittedWeek.indexOf(dayValue) + 1} = ${dayValue}\n`, error => {
+                            if(error) console.log("ERROR while cycling data/adding to file:", error);
+                        });
+                    }
+                })
+                console.log("Dates added to file!!");
+            }
         }
+        
+        // for (let Week in committedWeeks) {
+        //     let currentlyEvaluatedCommittedWeek = committedWeeks[Week];
+            
+        //     console.log(currentlyEvaluatedCommittedWeek)
+
+        //     // console.log(`Week = ${Week}`, `committedWeeks = ${committedWeeks}`);
+            
+        //     currentlyEvaluatedCommittedWeek.forEach((dayValue) => {
+        //         if (dayValue > 0) {
+        //             fs.appendFile(path.join(__dirname, '/your-art-project', "harry-potter-and-the-prisoner-of-your-mum.txt"), `Heelllooo\n`, error => {
+        //                 if(error) console.log("ERROR while cycling data/adding to file:", error);
+        //             });
+        //         }
+        //     })
+        //     console.log("Dates added to file!!")
+        // }
 
         // // add to file
         // fs.appendFile(path.join(__dirname, '/test', "your-art-project.txt"), " This is the next commit of the project TESTING TESTING 1 2 3...", error => {
