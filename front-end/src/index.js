@@ -1,5 +1,5 @@
-let moment = require('moment');
-const { format } = require('prettier');
+let moment = require("moment");
+const { format } = require("prettier");
 
 window.onload = () => {
   // remove and replace initGraphState once graph state function fully developed
@@ -35,35 +35,33 @@ const GraphStateCtrl = (function () {
 // RESPONSIBLE FOR MANAGING CONNECTIONS WITH SERVER
 const ClientCtrl = (function () {
   let requestRepo = (data) => {
-    fetch('http://localhost:3000/', {
-      method: 'POST',
+    fetch("http://localhost:3000/", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     })
-    .then(response => response.text())
-    .then(data => {
-      console.log(data);
-    })
-    .catch((error) => {
-      console.error('Something went wrong!! ||', error);
-    });
-    
-    
+      .then((response) => response.text())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Something went wrong!! ||", error);
+      });
+
     // fetch("http://localhost:3000/")
     // .then(response => response.text())
     // .then(data => {
     //   console.log(data);
     // })
     // .catch(error => console.log(`There is an error my good friend!! || ${error}`))
-  }
+  };
 
   return {
-    requestRepo
-  }
+    requestRepo,
+  };
 })();
-
 
 //// RESPONSIBLE FOR WATCHING AND RENDERING ELEMENTS IN THE UI
 const UICtrl = (function () {
@@ -74,7 +72,9 @@ const UICtrl = (function () {
 
   const clearGraphButton = document.getElementById("clear-button");
   const fillGraphButton = document.getElementById("fill-button");
-  const generateScheduleButton = document.getElementById("generate-schedule-button");
+  const generateScheduleButton = document.getElementById(
+    "generate-schedule-button"
+  );
 
   const normalRadioOption = document.getElementById("normal-option");
   const eraseRadioOption = document.getElementById("erase-option");
@@ -199,7 +199,7 @@ const UICtrl = (function () {
       const createdLineDate = document.createElement("td");
       const createdLineCommits = document.createElement("td");
       createdLineDate.innerHTML = Line;
-      if(schedule[Line] == 1) {
+      if (schedule[Line] == 1) {
         createdLineCommits.innerHTML = `${schedule[Line]} commit`;
       } else {
         createdLineCommits.innerHTML = `${schedule[Line]} commits`;
@@ -208,7 +208,7 @@ const UICtrl = (function () {
       createdLine.appendChild(createdLineCommits);
       scheduleList.appendChild(createdLine);
     }
-  }
+  };
 
   // let customTextSubmitted = (event) => {
   //   event.preventDefault();
@@ -230,37 +230,41 @@ const UICtrl = (function () {
   clearGraphButton.addEventListener("click", clearGraph);
   fillGraphButton.addEventListener("click", fillGraph);
 
-  generateScheduleButton.addEventListener("click", () => ScheduleCtrl.createSchedule(GraphStateCtrl.graphState));
+  generateScheduleButton.addEventListener("click", () =>
+    ScheduleCtrl.createSchedule(GraphStateCtrl.graphState)
+  );
 
   normalRadioOption.addEventListener("click", () => drawModeSwitch(NORMAL));
   eraseRadioOption.addEventListener("click", () => drawModeSwitch(ERASE));
   darkRadioOption.addEventListener("click", () => drawModeSwitch(DARK));
 
-  repoRequestButton.addEventListener("click", () => ClientCtrl.requestRepo(GraphStateCtrl.graphState));
+  repoRequestButton.addEventListener("click", () =>
+    ClientCtrl.requestRepo(GraphStateCtrl.graphState)
+  );
 
   return {
     renderGraph: renderGraph,
-    renderSchedule: renderSchedule
+    renderSchedule: renderSchedule,
   };
 })();
 
 //// RESPONSIBLE FOR GENERATING THE SCHEDULE UPON REQUEST
 const ScheduleCtrl = (function () {
   let _schedule = {};
-  
+
   let generateDate = (offset) => {
     let date = moment();
     if (offset > 0) {
       date.add(offset, "days");
     }
     return date.calendar(null, {
-      sameDay: '[Today: ] dddd',
-      nextDay: '[Tomorrow: ] dddd',
-      nextWeek: '[This coming] dddd',
-      sameElse: 'Do MMM YYYY'
+      sameDay: "[Today: ] dddd",
+      nextDay: "[Tomorrow: ] dddd",
+      nextWeek: "[This coming] dddd",
+      sameElse: "Do MMM YYYY",
     });
-  }
-  
+  };
+
   let createSchedule = (graphState) => {
     let _schedule = {};
     let dayOffset = 0;
@@ -270,21 +274,21 @@ const ScheduleCtrl = (function () {
       let weekArray = graphState[WeekID];
 
       // iterate through week's values
-      weekArray.forEach(dayValue => {
+      weekArray.forEach((dayValue) => {
         if (dayValue > 0) {
-          _schedule[generateDate(dayOffset)] = dayValue
+          _schedule[generateDate(dayOffset)] = dayValue;
         }
         dayOffset++;
       });
     }
-    
+
     console.log(_schedule);
-    
+
     // call function to render schedule in UI
     UICtrl.renderSchedule(_schedule);
-  }
+  };
 
   return {
-    createSchedule: createSchedule
-  }
+    createSchedule: createSchedule,
+  };
 })();
