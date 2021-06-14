@@ -5,76 +5,73 @@ const path = require("path");
 
 const server = express();
 const port = 3000;
-
 server.use(cors({ origin: "http://localhost:8080" }));
 server.use(express.json({ extended: false }));
 
 server.post("/", (request, response) => {
-  // SENDS RESPONSE TO CLIENT
-  response.send("Thanks!! We received your graph state (^̮^)");
+  // SEND RESPONSE TO CLIENT
+  // response.send("Thanks!! We received your graph state (^̮^)");
 
-  // PROCESSES REQUEST BODY (graphState) INTO VARIABLE "committedWeeks"
-  let graphState = request.body;
-  let committedWeeks = {
-    commitsRequired: false,
-  };
+  // FUNCTIONS
+  let getCommittedDays = (graphState) => {
+    let committedDaysTempArray = {
+      commitsRequired: false,
+    };
 
-  for (let Week in graphState) {
-    let currentlyEvaluatedWeek = graphState[Week];
-    currentlyEvaluatedWeek.forEach((dayValue) => {
-      if (dayValue > 0) {
-        committedWeeks.commitsRequired = true;
-        committedWeeks[Week] = currentlyEvaluatedWeek;
-      }
-    });
-  }
-
-  // PROCESSES COMMITTEDWEEKS INTO PROJECT DIRECTORY/FILES
-  if (committedWeeks.commitsRequired) {
-    // delete existing directory
-    if (path.join(__dirname, "/your-art-project")) {
-      fs.rmdirSync(path.join(__dirname, "/your-art-project"), {
-        recursive: true,
+    for (let Week in graphState) {
+      let currentlyEvaluatedWeek = graphState[Week];
+      currentlyEvaluatedWeek.forEach((dayValue) => {
+        if (dayValue > 0) {
+          committedDaysTempArray.commitsRequired = true;
+          committedDaysTempArray[Week] = currentlyEvaluatedWeek;
+        }
       });
-      console.log("Old directory deleted!!!");
     }
 
+    return committedDaysTempArray;
+  };
+
+  let createProjectDirectory = () => {
+    // delete existing directory
+    if (path.join(__dirname, "/art-project")) {
+      fs.rmdirSync(path.join(__dirname, "/art-project"), {
+        recursive: true,
+      });
+    }
     // make new directory
-    fs.mkdir(path.join(__dirname, "/your-art-project"), {}, (error) => {
-      if (error)
-        console.log("ERROR with making your project directory:", error);
+    fs.mkdirSync(path.join(__dirname, "/art-project"), {}, (error) => {
+      if (error) console.log("ERROR with making project directory:", error);
       console.log("Folder created!");
     });
-
-    // create and write to file (will over-write if file already exists)
-    fs.writeFile(
-      path.join(
-        __dirname,
-        "/your-art-project",
-        "harry-potter-and-the-prisoner-of-your-mum.txt"
-      ),
-      "So this is how the story goes...\n\n",
+    // copy project readme.md
+    fs.copyFileSync(
+      path.join(__dirname, "/templateREADME.md"),
+      path.join(__dirname, "/art-project", "README.md")
+    );
+    // create project art-file
+    fs.writeFileSync(
+      path.join(__dirname, "/art-project", "art-file.txt"),
+      "These are your commits:\n",
       (error) => {
-        if (error) console.log("ERROR creating your project files:", error);
-        console.log("File created!");
+        if (error) console.log("ERROR creating the project art-file:", error);
       }
     );
 
-    for (const [week, days] of Object.entries(committedWeeks)) {
-      let currentlyEvaluatedCommittedWeek = committedWeeks[week];
+    // init git repo
+    // commit all files -m "initial project files"
+  };
 
+  let createProjectArtFile = (committedDays) => {
+    // loop through committed days and write/commit when dayvalue > 0
+    for (const [week, days] of Object.entries(committedDays)) {
       if (week.includes("week")) {
-        currentlyEvaluatedCommittedWeek.forEach((dayValue) => {
+        days.forEach((dayValue) => {
           if (dayValue > 0) {
-            fs.appendFile(
-              path.join(
-                __dirname,
-                "/your-art-project",
-                "harry-potter-and-the-prisoner-of-your-mum.txt"
-              ),
-              `${week} day${
-                currentlyEvaluatedCommittedWeek.indexOf(dayValue) + 1
-              } = ${dayValue}\n`,
+            fs.appendFileSync(
+              path.join(__dirname, "/art-project", "art-file.txt"),
+              `\n${week} day${
+                days.indexOf(dayValue) + 1
+              } = ${dayValue}`,
               (error) => {
                 if (error)
                   console.log(
@@ -85,18 +82,23 @@ server.post("/", (request, response) => {
             );
           }
         });
-        console.log("Dates added to file!!");
       }
     }
-  } else {
-    console.log("There is nothing to commit for this graph state");
+  };
 
-    if (path.join(__dirname, "/your-art-project")) {
-      console.log("Old directory deleted!!");
-      fs.rmdirSync(path.join(__dirname, "/your-art-project"), {
-        recursive: true,
-      });
-    }
+  // STEP 1 - PROCESS REQUEST BODY INTO VARIABLE
+  let committedDays = getCommittedDays(request.body);
+
+  // STEP 2 - PROCESSES COMMITTEDDAYS INTO PROJECT DIRECTORY/FILES
+  if (committedDays.commitsRequired) {
+    response.send("Thanks!! We received your graph state (^̮^)");
+
+    createProjectDirectory();
+    createProjectArtFile(committedDays);
+
+    console.log("Requested project created!!")
+  } else {
+    response.send("Oops!! Looks like you didn't submit anything (^̮^)");
   }
 });
 
