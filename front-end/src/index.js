@@ -1,5 +1,4 @@
 let moment = require("moment");
-const { format } = require("prettier");
 
 window.onload = () => {
   // remove and replace initGraphState once graph state function fully developed
@@ -25,10 +24,16 @@ const GraphStateCtrl = (function () {
     _graphState[week][day] = newVal;
   };
 
+  let inputUserInfo = (email, username) => {
+    _graphState["email"] = email;
+    _graphState["username"] = username;
+  }
+
   return {
     graphState: _graphState,
-    initGraphState: initGraphState,
-    updateGraphState: updateGraphState,
+    initGraphState,
+    updateGraphState,
+    inputUserInfo
   };
 })();
 
@@ -49,13 +54,6 @@ const ClientCtrl = (function () {
       .catch((error) => {
         console.error("Something went wrong!! ||", error);
       });
-
-    // fetch("http://localhost:3000/")
-    // .then(response => response.text())
-    // .then(data => {
-    //   console.log(data);
-    // })
-    // .catch(error => console.log(`There is an error my good friend!! || ${error}`))
   };
 
   return {
@@ -66,27 +64,30 @@ const ClientCtrl = (function () {
 //// RESPONSIBLE FOR WATCHING AND RENDERING ELEMENTS IN THE UI
 const UICtrl = (function () {
   const contributionGraph = document.getElementById("year");
-  const textFieldSubmitButton = document.getElementById("text-form");
-  const textField = document.getElementById("text-field");
-  const scheduleList = document.getElementById("schedule-list");
-
+  
   const clearGraphButton = document.getElementById("clear-button");
-  const fillGraphButton = document.getElementById("fill-button");
-  const generateScheduleButton = document.getElementById(
-    "generate-schedule-button"
-  );
-
   const normalRadioOption = document.getElementById("normal-option");
   const eraseRadioOption = document.getElementById("erase-option");
   const darkRadioOption = document.getElementById("dark-option");
+  const fillGraphButton = document.getElementById("fill-button");
+  
+  const downloadGitButton = document.getElementById("repo-request");
+  const generateScheduleButton = document.getElementById(
+    "generate-schedule-button"
+  );
+  
+  const scheduleTable = document.getElementById("schedule-table");
+  const scheduleList = document.getElementById("schedule-list");
+  const userInfoForm = document.getElementById("user-info-form");
 
-  const repoRequestButton = document.getElementById("repo-request");
+  const confirmDownloadButton = document.getElementById("download-repo");
 
-  // TO DO:
-  // (function() {clear/init empty schedule})();
-  // function renderSchedule (Schedule) {render schedule}
-  // userNameInput.addeventlistener('submit', function(e){console.log(e.target.value); e.target.value = '';})
-  // scheduleRequest.addeventlistener('submit', renderSchedule(Schedule))
+  const emailField = document.getElementById("user-email-field");
+  const usernameField = document.getElementById("user-username-field");
+    
+  // FUNCTIONS:
+  let showElement = (element, value) => element.style.display = `${value}`
+  let hideElement = element => element.style.display = "none"
 
   let renderGraph = () => {
     // deletes graph if already present
@@ -210,41 +211,44 @@ const UICtrl = (function () {
     }
   };
 
-  // let customTextSubmitted = (event) => {
-  //   event.preventDefault();
-  //   if (textField.value) {
-  //     console.log(textField.value);
-  //     textField.value = "";
-  //   }
-  // };
-
   // EVENT LISTENERS
-  // textFieldSubmitButton.addEventListener("submit", customTextSubmitted);
-
   contributionGraph.addEventListener("mouseup", mouseDownUpDraw);
   contributionGraph.addEventListener("mousedown", mouseDownUpDraw);
   contributionGraph.addEventListener("mouseover", mouseOverDraw);
   contributionGraph.addEventListener("mouseleave", leftDrawArea);
   contributionGraph.addEventListener("mouseenter", enteredDrawArea);
-
+  
   clearGraphButton.addEventListener("click", clearGraph);
-  fillGraphButton.addEventListener("click", fillGraph);
-
-  generateScheduleButton.addEventListener("click", () =>
-    ScheduleCtrl.createSchedule(GraphStateCtrl.graphState)
-  );
-
   normalRadioOption.addEventListener("click", () => drawModeSwitch(NORMAL));
   eraseRadioOption.addEventListener("click", () => drawModeSwitch(ERASE));
   darkRadioOption.addEventListener("click", () => drawModeSwitch(DARK));
+  fillGraphButton.addEventListener("click", fillGraph);
+  
+  downloadGitButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    hideElement(scheduleTable);
+    showElement(userInfoForm, "block");
+  });
+  generateScheduleButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    hideElement(userInfoForm);
+    showElement(scheduleTable, "table");
+    ScheduleCtrl.createSchedule(GraphStateCtrl.graphState);
+  });
 
-  repoRequestButton.addEventListener("click", () =>
+  confirmDownloadButton.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    let userEmail = emailField.value;
+    let userUsername = usernameField.value;
+    GraphStateCtrl.inputUserInfo(userEmail, userUsername);
+
     ClientCtrl.requestRepo(GraphStateCtrl.graphState)
-  );
+  });
 
   return {
-    renderGraph: renderGraph,
-    renderSchedule: renderSchedule,
+    renderGraph,
+    renderSchedule
   };
 })();
 
@@ -282,13 +286,14 @@ const ScheduleCtrl = (function () {
       });
     }
 
-    console.log(_schedule);
+    if (dayOffset !== 0) {
+      UICtrl.renderSchedule(_schedule);
+    } else {
 
-    // call function to render schedule in UI
-    UICtrl.renderSchedule(_schedule);
+    }
   };
 
   return {
-    createSchedule: createSchedule,
+    createSchedule
   };
 })();
