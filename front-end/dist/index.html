@@ -20,82 +20,125 @@
 
   <body>
     <div id="header" class="u-full-width">
-      <a href="#">help <i class="far fa-question-circle"></i></a>
+      <a href="#" id="help-button">Help <i class="far fa-question-circle"></i></a>
     </div>
 
-    <div class="container">
-      <h1 id="title">commitCanvas</h1>
+    <div id="site-container">
+      <br>
+      <h1 id="site-title">commitCanvas</h1>
 
-      <h5 id="explain">
-        an interactive tool that helps you create art within your own Github
+      <h4 class="centered-text">
+        The interactive tool that helps you create art within your own GitHub
         contribution graph
+      </h4>
+      <br>
+      
+      <h5 class="centered-text">
+        The below graph is a imitation of the GitHub contribution graph only better. <u>You can draw in this one!!</strong>
+        </u>
       </h5>
 
-      <!-- <form class="form" id="text-form">
-        <div class="form-items">
-          <label for="custom-message">art goes here</label>
-          <input
-            class="u-full-width"
-            type="text"
-            placeholder="message / letterArt / pattern / symbol"
-            id="text-field"
-          />
-          <input class="button-primary" type="submit" value="Submit" />
-        </div>
-      </form> -->
+    <div id="site-instructions-group">
+      <p>
+        Fill the graph with art and then either:
+      </p>
+      <div  id="site-instructions">
+        <p class="centered-text instructions-body">
+          generate a schedule that details your future commits to display the art on your GitHub profile!
+        </p>
+        <p class="centered-text instructions-OR centered-text">
+          <strong>
+            OR
+          </strong>
+        </p>
+        <p class="centered-text instructions-body">
+          download an all in one Git repository which will display the art after uploading it to your GitHub profile!
+        </p>
+      </div>
+    </div>
 
       <div id="contribution-graph-window">
         <div id="year"></div>
         <div id="contribution-graph-options">
-          <input id="clear-button" type="submit" class="button" value="Clear" />
-          <input id="fill-button" type="submit" class="button" value="Fill" />
-
+          <button id="clear-button" type="submit" class="button">
+            Clear
+          </button>
+          
           <div id="paint-options">
             <input
-              type="radio"
-              id="normal-option"
-              name="paint-options"
-              value="normal"
-              checked
+            type="radio"
+            id="normal-option"
+            name="paint-options"
+            value="normal"
+            checked
             />
             <label for="normal">Normal</label><br />
             <input
-              type="radio"
-              id="erase-option"
-              name="paint-options"
-              value="erase"
+            type="radio"
+            id="erase-option"
+            name="paint-options"
+            value="erase"
             />
             <label for="erase">Erase</label><br />
             <input
-              type="radio"
-              id="dark-option"
-              name="paint-options"
-              value="dark"
+            type="radio"
+            id="dark-option"
+            name="paint-options"
+            value="dark"
             />
             <label for="dark">Dark</label>
           </div>
 
-          <input
-            id="generate-schedule-button"
-            type="submit"
-            class="button"
-            value="Generate Schedule"
-          />
+          <button id="fill-button" type="submit" class="button">
+            Fill
+          </button>
         </div>
       </div>
+      
+      <br>
 
-      <button id="repo-request" type="submit" class="button">
-        Create Repo
-      </button>
+      <div id="output-button-group">
+        <button id="repo-request" type="submit" class="button">
+          Download Git Repo
+        </button>
+        <p>
+          <strong>
+            OR
+          </strong>
+        </p>
+        <button id="generate-schedule-button" type="submit" class="button">
+          Generate Schedule
+        </button>
+      </div>
+
       <br />
-
-      <a href="#">advanced <i class="fas fa-caret-down"></i></a>
+      
+      <form class="form" id="user-info-form">
+        <div class="form-items">
+          <label for="user-info-form">Please enter the below and click download to continue</label>
+          <input
+            class="u-full-width"
+            type="email"
+            placeholder="Email Address"
+            id="user-email-field"
+          />
+          <input
+            class="u-full-width"
+            type="text"
+            placeholder="GitHub Username"
+            id="user-username-field"
+          />
+          <button id="download-repo" type="submit" class="button-primary">
+            Download
+          </button>
+        </div>
+      </form>
 
       <table id="schedule-table" class="u-full-width">
         <thead>
           <tr>
-            <th>date</th>
-            <th>number of commits</th>
+            <th>Date</th>
+            <th>Number of commits</th>
           </tr>
         </thead>
         <tbody id="schedule-list">

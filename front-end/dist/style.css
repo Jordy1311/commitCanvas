@@ -10,32 +10,53 @@ input {
   margin: 0 2px;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 #header {
+  height: 24px;
   display: flex;
   justify-content: flex-end;
 }
-.container {
+#site-container {
+  flex-grow: 1;
   width: 90%;
+  margin: auto;
+  padding: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-#title {
-  color: rgb(144, 230, 158);
+#site-title {
+  color: #2a9745;
   margin-top: 1em;
 }
-#explain {
+.centered-text {
   text-align: center;
 }
-.form {
-  width: 60%;
-  align-items: center;
-}
-.form-items {
+
+#site-instructions-group {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+#site-instructions {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+}
+#site-instructions * {
+  margin: 5px;
+}
+.instructions-body {
+  width: 30%;
+}
+.instructions-OR {
+  align-self: center;
+}
+
 #contribution-graph-window {
   width: 650px;
   height: 150px;
@@ -57,6 +78,7 @@ input {
 }
 #paint-options {
   margin-left: 5px;
+  margin-right: 5px;
   display: flex;
   align-items: center;
   align-content: center;
@@ -69,11 +91,31 @@ input {
 #paint-options label {
   margin: 3px 5px 3px 0px;
 }
-#log-graphState {
-  align-self: end;
+
+#output-button-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+#output-button-group * {
+  margin: 3px;
+}
+
+#user-info-form {
+  display: none;
+}
+.form {
+  width: 60%;
+  align-items: center;
+}
+.form-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 #schedule-table {
-  /* display: none; */
+  display: none;
   width: 80%;
   height: 100px;
   margin: 25px;
@@ -122,3 +164,6 @@ input {
   background-color: #1e5f31;
   border-radius: 2px;
 }
+/* .show-element {
+  display: block;
+} */
