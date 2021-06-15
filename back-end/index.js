@@ -1,12 +1,17 @@
 const express = require("express");
 const cors = require("cors");
+const simpleGit = require("simple-git");
+const compression = require("compression");
 const fs = require("fs");
 const path = require("path");
 
 const server = express();
 const port = 3000;
 server.use(cors({ origin: "http://localhost:8080" }));
+server.use(compression());
 server.use(express.json({ extended: false }));
+
+const git = simpleGit(path.join(__dirname, "/art-project"), undefined);
 
 server.post("/", (request, response) => {
   // SEND RESPONSE TO CLIENT
@@ -41,6 +46,7 @@ server.post("/", (request, response) => {
     // make new directory
     fs.mkdirSync(path.join(__dirname, "/art-project"), {}, (error) => {
       if (error) console.log("ERROR with making project directory:", error);
+      git.init(bare);
       console.log("Folder created!");
     });
     // copy project readme.md
@@ -85,6 +91,8 @@ server.post("/", (request, response) => {
       }
     }
   };
+
+  console.log(request.body);
 
   // STEP 1 - PROCESS REQUEST BODY INTO VARIABLE
   let committedDays = getCommittedDays(request.body);
