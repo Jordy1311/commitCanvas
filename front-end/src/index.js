@@ -63,6 +63,9 @@ const ClientCtrl = (function () {
 
 //// RESPONSIBLE FOR WATCHING AND RENDERING ELEMENTS IN THE UI
 const UICtrl = (function () {
+  const helpButton = document.getElementById("help-button");
+  const siteInstructions = document.getElementById("site-instructions-group");
+
   const contributionGraph = document.getElementById("year");
   
   const clearGraphButton = document.getElementById("clear-button");
@@ -86,6 +89,14 @@ const UICtrl = (function () {
   const usernameField = document.getElementById("user-username-field");
     
   // FUNCTIONS:
+  let hideShowHelp = () => {
+    if (siteInstructions.style.display !== "flex") {
+      siteInstructions.style.display = "flex";
+    } else {
+      siteInstructions.style.display = "none";
+    };
+  };
+
   let showElement = (element, value) => element.style.display = `${value}`
   let hideElement = element => element.style.display = "none"
 
@@ -211,7 +222,19 @@ const UICtrl = (function () {
     }
   };
 
+  let downloadGitRepo = (event) => {
+    event.preventDefault();
+
+    let userEmail = emailField.value;
+    let userUsername = usernameField.value;
+    GraphStateCtrl.inputUserInfo(userEmail, userUsername);
+
+    ClientCtrl.requestRepo(GraphStateCtrl.graphState)
+  }
+
   // EVENT LISTENERS
+  helpButton.addEventListener("click", hideShowHelp);
+
   contributionGraph.addEventListener("mouseup", mouseDownUpDraw);
   contributionGraph.addEventListener("mousedown", mouseDownUpDraw);
   contributionGraph.addEventListener("mouseover", mouseOverDraw);
@@ -236,15 +259,7 @@ const UICtrl = (function () {
     ScheduleCtrl.createSchedule(GraphStateCtrl.graphState);
   });
 
-  confirmDownloadButton.addEventListener("click", (event) => {
-    event.preventDefault();
-
-    let userEmail = emailField.value;
-    let userUsername = usernameField.value;
-    GraphStateCtrl.inputUserInfo(userEmail, userUsername);
-
-    ClientCtrl.requestRepo(GraphStateCtrl.graphState)
-  });
+  confirmDownloadButton.addEventListener("click", downloadGitRepo);
 
   return {
     renderGraph,

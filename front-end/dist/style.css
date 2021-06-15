@@ -38,7 +38,7 @@ body {
 }
 
 #site-instructions-group {
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
 }
