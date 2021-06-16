@@ -205,21 +205,33 @@ const UICtrl = (function () {
         scheduleList.firstChild.remove();
       }
     }
-    // draws schedule in UI based off schedule
-    for (let Line in schedule) {
+    console.log(Object.keys(schedule).length);
+    if (Object.keys(schedule).length === 0) {
       const createdLine = document.createElement("tr");
       const createdLineDate = document.createElement("td");
       const createdLineCommits = document.createElement("td");
-      createdLineDate.innerHTML = Line;
-      if (schedule[Line] == 1) {
-        createdLineCommits.innerHTML = `${schedule[Line]} commit`;
-      } else {
-        createdLineCommits.innerHTML = `${schedule[Line]} commits`;
-      }
+      createdLineDate.innerHTML = "No dates required!!";
+      createdLineCommits.innerHTML = "No commits required!!";
       createdLine.appendChild(createdLineDate);
       createdLine.appendChild(createdLineCommits);
       scheduleList.appendChild(createdLine);
-    }
+    } else {
+      // draws schedule in UI based off schedule
+      for (let Line in schedule) {
+        const createdLine = document.createElement("tr");
+        const createdLineDate = document.createElement("td");
+        const createdLineCommits = document.createElement("td");
+        createdLineDate.innerHTML = Line;
+        if (schedule[Line] == 1) {
+          createdLineCommits.innerHTML = `${schedule[Line]} commit`;
+        } else {
+          createdLineCommits.innerHTML = `${schedule[Line]} commits`;
+        }
+        createdLine.appendChild(createdLineDate);
+        createdLine.appendChild(createdLineCommits);
+        scheduleList.appendChild(createdLine);
+      };
+    };
   };
 
   let downloadGitRepo = (event) => {
