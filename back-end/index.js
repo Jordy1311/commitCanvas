@@ -62,9 +62,11 @@ server.post("/", (request, response) => {
         if (error) console.log("ERROR creating the project art-file:", error);
       }
     );
-
-    // init git repo
-    // commit all files -m "initial project files"
+    // init git repository location
+    const git = simpleGit(path.join(__dirname, "/art-project/"), undefined);
+    git.init();
+    git.add(["./"]);
+    git.commit("first commit!!");
   };
 
   let createProjectArtFile = (committedDays) => {
