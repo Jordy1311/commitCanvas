@@ -205,7 +205,6 @@ const UICtrl = (function () {
         scheduleList.firstChild.remove();
       }
     }
-    console.log(Object.keys(schedule).length);
     if (Object.keys(schedule).length === 0) {
       const createdLine = document.createElement("tr");
       const createdLineDate = document.createElement("td");

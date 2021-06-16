@@ -115,13 +115,17 @@ body {
 }
 
 #schedule-table {
+  table-layout: fixed;
   display: none;
-  width: 80%;
+  width: 50%;
   height: 100px;
   margin: 25px;
   padding: 1em;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+#schedule-table * {
+  text-align: center;
 }
 
 .commit-0 {
