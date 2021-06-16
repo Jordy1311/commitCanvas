@@ -79,7 +79,7 @@ server.post("/", (request, response) => {
               path.join(__dirname, "/art-project", "art-file.txt"),
               `\n${week} day${
                 days.indexOf(dayValue) + 1
-              } = ${dayValue}`,
+              } : ${dayValue}`,
               (error) => {
                 if (error)
                   console.log(
@@ -95,8 +95,38 @@ server.post("/", (request, response) => {
   };
 
   console.log(request.body);
+  let zipDirectory = () => {
+    let output = fs.createWriteStream('target.zip');
+    let archive = archiver('zip');
 
-  // STEP 1 - PROCESS REQUEST BODY INTO VARIABLE
+    output.on('close', () => {
+      console.log(archive.pointer() + ' total bytes');
+      console.log('archiver has been finalized and the output file descriptor has closed.');
+    });
+
+    archive.on('error', err => {
+      throw err;
+    });
+
+    archive.pipe(output);
+
+    archive.directory(path.join(__dirname, "/art-project"), true);
+  
+    archive.finalize();
+
+      // TypeError [ERR_INVALID_ARG_VALUE]: The argument '
+      // week1 day1 : 1' is invalid encoding. Received 'encoding'
+      //     at new NodeError (node:internal/errors:329:5)
+      //     at assertEncoding (node:internal/fs/utils:136:11)
+      //     at getOptions (node:internal/fs/utils:311:5)
+      //     at Object.appendFileSync (node:fs:1565:13)
+      //     at /Users/jordan/Documents/web-dev/commitCanvas/back-end/index.js:75:16
+      //     at Array.forEach (<anonymous>)
+      //     at createProjectArtFile (/Users/jordan/Documents/web-dev/commitCanvas/back-end/index.js:73:14)
+      //     at /Users/jordan/Documents/web-dev/commitCanvas/back-end/index.js:122:5
+      //     at Layer.handle [as handle_request] (/Users/jordan/Documents/web-dev/commitCanvas/back-end/node_modules/express/lib/router/layer.js:95:5)
+      //     at next (/Users/jordan/Documents/web-dev/commitCanvas/back-end/node_modules/express/lib/router/route.js:137:13)
+  }
   let committedDays = getCommittedDays(request.body);
 
   // STEP 2 - PROCESSES COMMITTEDDAYS INTO PROJECT DIRECTORY/FILES
@@ -105,6 +135,7 @@ server.post("/", (request, response) => {
 
     createProjectDirectory();
     createProjectArtFile(committedDays);
+    zipDirectory();
 
     console.log("Requested project created!!")
   } else {
