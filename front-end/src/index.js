@@ -25,8 +25,8 @@ const GraphStateCtrl = (function () {
   };
 
   let inputUserInfo = (email, username) => {
-    _graphState["email"] = email;
-    _graphState["username"] = username;
+    _graphState["email"] = [email];
+    _graphState["username"] = [username];
   }
 
   return {
