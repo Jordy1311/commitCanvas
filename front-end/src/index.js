@@ -209,8 +209,8 @@ const UICtrl = (function () {
       const createdLine = document.createElement("tr");
       const createdLineDate = document.createElement("td");
       const createdLineCommits = document.createElement("td");
-      createdLineDate.innerHTML = "No dates required!!";
-      createdLineCommits.innerHTML = "No commits required!!";
+      createdLineDate.innerHTML = "No dates!!";
+      createdLineCommits.innerHTML = "No commits!!";
       createdLine.appendChild(createdLineDate);
       createdLine.appendChild(createdLineCommits);
       scheduleList.appendChild(createdLine);
