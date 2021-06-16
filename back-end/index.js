@@ -1,22 +1,16 @@
+const fs = require("fs");
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const simpleGit = require("simple-git");
-const compression = require("compression");
-const fs = require("fs");
-const path = require("path");
+const archiver = require("archiver");
 
 const server = express();
 const port = 3000;
 server.use(cors({ origin: "http://localhost:8080" }));
-server.use(compression());
 server.use(express.json({ extended: false }));
 
-const git = simpleGit(path.join(__dirname, "/art-project"), undefined);
-
 server.post("/", (request, response) => {
-  // SEND RESPONSE TO CLIENT
-  // response.send("Thanks!! We received your graph state (^̮^)");
-
   // FUNCTIONS
   let getCommittedDays = (graphState) => {
     let committedDaysTempArray = {
@@ -37,14 +31,15 @@ server.post("/", (request, response) => {
   };
 
   let createProjectDirectory = () => {
+    let directoryPath = path.join(__dirname, "/art-project");
     // delete existing directory
-    if (path.join(__dirname, "/art-project")) {
+    if (directoryPath) {
       fs.rmdirSync(path.join(__dirname, "/art-project"), {
         recursive: true,
       });
     }
     // make new directory
-    fs.mkdirSync(path.join(__dirname, "/art-project"), {}, (error) => {
+    fs.mkdirSync(directoryPath, {}, (error) => {
       if (error) console.log("ERROR with making project directory:", error);
       git.init(bare);
       console.log("Folder created!");
@@ -52,31 +47,37 @@ server.post("/", (request, response) => {
     // copy project readme.md
     fs.copyFileSync(
       path.join(__dirname, "/templateREADME.md"),
-      path.join(__dirname, "/art-project", "README.md")
+      path.join(directoryPath, "README.md")
     );
     // create project art-file
     fs.writeFileSync(
-      path.join(__dirname, "/art-project", "art-file.txt"),
+      path.join(directoryPath, "art-file.txt"),
       "These are your commits:\n",
       (error) => {
         if (error) console.log("ERROR creating the project art-file:", error);
       }
     );
-    // init git repository location
-    const git = simpleGit(path.join(__dirname, "/art-project/"), undefined);
+    // init git & first commit
+    const git = simpleGit(directoryPath, undefined);
     git.init();
+    git.cwd({ path: directoryPath, root: true });
     git.add(["./"]);
     git.commit("first commit!!");
+
+    // inits .git, but commits to commitCanvas repo rather than the newly made one
+    // need to change working directory with .cwd but can't seem to figure out how to make it work
+    // even with the examples given
   };
 
   let createProjectArtFile = (committedDays) => {
+    let directoryPath = path.join(__dirname, "/art-project");
     // loop through committed days and write/commit when dayvalue > 0
     for (const [week, days] of Object.entries(committedDays)) {
       if (week.includes("week")) {
         days.forEach((dayValue) => {
           if (dayValue > 0) {
             fs.appendFileSync(
-              path.join(__dirname, "/art-project", "art-file.txt"),
+              directoryPath, "art-file.txt",
               `\n${week} day${
                 days.indexOf(dayValue) + 1
               } : ${dayValue}`,
@@ -92,9 +93,18 @@ server.post("/", (request, response) => {
         });
       }
     }
+
+    // need to change this function so that it writes to the file what I want
+    // and so that each time it writes it also commits to the correct date in the past
+    // TALK TO FLO ABOUT RELATIVE DATES (dates not lining up with what GitHub shows
+    // (the first cube is for day and the next for tomorrow and so on but GitHub is a glance to the past))
+    // Might I almost need to different graphState generation functions that puts the dates of the cubes
+    // in the future if the user is requesting a schedule but in the past, somehow, if they request a repo
+    // requesting a repo also brings in the complication of whether or not something will overlap something
+    // but also the darkness of the cubes seems if someone does a lot of work usually, the commitCanvas
+    // will need to submit more than 1,2,3,4 times
   };
 
-  console.log(request.body);
   let zipDirectory = () => {
     let output = fs.createWriteStream('target.zip');
     let archive = archiver('zip');
@@ -127,16 +137,19 @@ server.post("/", (request, response) => {
       //     at Layer.handle [as handle_request] (/Users/jordan/Documents/web-dev/commitCanvas/back-end/node_modules/express/lib/router/layer.js:95:5)
       //     at next (/Users/jordan/Documents/web-dev/commitCanvas/back-end/node_modules/express/lib/router/route.js:137:13)
   }
+
+  // STEP 1 - PROCESS REQUEST BODY INTO VARIABLES
   let committedDays = getCommittedDays(request.body);
+  let userEmail = request.body.email[0];
+  let userUsername = request.body.username[0];
 
   // STEP 2 - PROCESSES COMMITTEDDAYS INTO PROJECT DIRECTORY/FILES
   if (committedDays.commitsRequired) {
-    response.send("Thanks!! We received your graph state (^̮^)");
-
     createProjectDirectory();
     createProjectArtFile(committedDays);
     zipDirectory();
 
+    response.send("Thanks!! We received your graph state (^̮^)");
     console.log("Requested project created!!")
   } else {
     response.send("Oops!! Looks like you didn't submit anything (^̮^)");
