@@ -282,6 +282,7 @@ const UICtrl = (function () {
 const ScheduleCtrl = (function () {
   let _schedule = {};
 
+  // TODO: we can use the exact same thing in the backend, and as talked about offset by 2017
   let generateDate = (offset) => {
     let date = moment();
     if (offset > 0) {
@@ -294,6 +295,15 @@ const ScheduleCtrl = (function () {
       sameElse: "Do MMM YYYY",
     });
   };
+
+  /* NOTE:
+    backend thoughts:
+    
+    daysSchedule // [date, date, date, date]
+
+    loop through daysSchedule:
+      git.commit("first commit!!", {'--author': "", '--email': "", "--date": date.toUTCTimestamp() });
+  */
 
   let createSchedule = (graphState) => {
     let _schedule = {};

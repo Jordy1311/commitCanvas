@@ -10,7 +10,13 @@ const port = 3000;
 server.use(cors({ origin: "http://localhost:8080" }));
 server.use(express.json({ extended: false }));
 
+// TODO: later on we will investigate /tmp/ path
+// solves issue commits on the commit canvas itself
+const PROJECT_PATH = path.join(__dirname, "/art-project");
+
 server.post("/", (request, response) => {
+  // NOTE: common to move functions out of request handlers
+
   // FUNCTIONS
   let getCommittedDays = (graphState) => {
     let committedDaysTempArray = {
@@ -31,56 +37,49 @@ server.post("/", (request, response) => {
   };
 
   let createProjectDirectory = () => {
-    let directoryPath = path.join(__dirname, "/art-project");
     // delete existing directory
-    if (directoryPath) {
-      fs.rmdirSync(path.join(__dirname, "/art-project"), {
+    if (PROJECT_PATH) {
+      fs.rmdirSync(PROJECT_PATH, {
         recursive: true,
       });
     }
     // make new directory
-    fs.mkdirSync(directoryPath, {}, (error) => {
-      if (error) console.log("ERROR with making project directory:", error);
-      git.init(bare);
-      console.log("Folder created!");
+    fs.mkdirSync(PROJECT_PATH, {}, (error) => {
+      throw `ERROR with making project directory: ${error}`;
     });
     // copy project readme.md
     fs.copyFileSync(
       path.join(__dirname, "/templateREADME.md"),
-      path.join(directoryPath, "README.md")
+      path.join(PROJECT_PATH, "README.md")
     );
     // create project art-file
     fs.writeFileSync(
-      path.join(directoryPath, "art-file.txt"),
+      path.join(PROJECT_PATH, "art-file.txt"),
       "These are your commits:\n",
       (error) => {
-        if (error) console.log("ERROR creating the project art-file:", error);
+        throw `ERROR creating the project art-file: ${error}`;
       }
     );
-    // init git & first commit
-    const git = simpleGit(directoryPath, undefined);
-    git.init();
-    git.cwd({ path: directoryPath, root: true });
-    git.add(["./"]);
-    git.commit("first commit!!");
-
-    // inits .git, but commits to commitCanvas repo rather than the newly made one
-    // need to change working directory with .cwd but can't seem to figure out how to make it work
-    // even with the examples given
   };
 
-  let createProjectArtFile = (committedDays) => {
-    let directoryPath = path.join(__dirname, "/art-project");
+  let createProjectArtFile = (committedDays, gitClient) => {
     // loop through committed days and write/commit when dayvalue > 0
     for (const [week, days] of Object.entries(committedDays)) {
+      let commitDate = moment(); // TODO: initially set it to Jan 1 2017
+
       if (week.includes("week")) {
-        days.forEach((dayValue) => {
-          if (dayValue > 0) {
+        // TODO: need to find what week we're in
+        // commitDate.add some sort offset equivalent to that week
+
+        days.forEach((amountCommitted, theDay) => {
+          // TODO: now we have theDay
+          // commitDate.add some sort offset equivalent to that day
+
+          // at this point you'll have the final date stamp of the commits to follow
+          for (let i = 0; i < amountCommitted; i++) {
             fs.appendFileSync(
-              directoryPath, "art-file.txt",
-              `\n${week} day${
-                days.indexOf(dayValue) + 1
-              } : ${dayValue}`,
+              `${PROJECT_PATH}/art-file.txt`,
+              `\n${week} day${days.indexOf(amountCommitted) + 1} commit: ${i}`,
               (error) => {
                 if (error)
                   console.log(
@@ -89,68 +88,73 @@ server.post("/", (request, response) => {
                   );
               }
             );
+            gitClient.performCommit(
+              `\n${week} day${days.indexOf(amountCommitted) + 1} commit: ${i}`,
+              commitDate.toString()
+            );
           }
         });
       }
     }
 
-    // need to change this function so that it writes to the file what I want
-    // and so that each time it writes it also commits to the correct date in the past
+    // so each time it writes it also commits to the correct date in the past
     // TALK TO FLO ABOUT RELATIVE DATES (dates not lining up with what GitHub shows
     // (the first cube is for day and the next for tomorrow and so on but GitHub is a glance to the past))
+    //
     // Might I almost need to different graphState generation functions that puts the dates of the cubes
     // in the future if the user is requesting a schedule but in the past, somehow, if they request a repo
     // requesting a repo also brings in the complication of whether or not something will overlap something
     // but also the darkness of the cubes seems if someone does a lot of work usually, the commitCanvas
     // will need to submit more than 1,2,3,4 times
+
+    /*
+     * NOTE:
+     * first approach can be simpler
+     * 1. introduce choosing of year? default 2017 (far enough back)
+     * 2. loop day value to simulate commit times
+     */
   };
 
   let zipDirectory = () => {
-    let output = fs.createWriteStream('target.zip');
-    let archive = archiver('zip');
+    let output = fs.createWriteStream("target.zip");
+    let archive = archiver("zip");
 
-    output.on('close', () => {
-      console.log(archive.pointer() + ' total bytes');
-      console.log('archiver has been finalized and the output file descriptor has closed.');
+    output.on("close", () => {
+      console.log(archive.pointer() + " total bytes");
+      console.log(
+        "archiver has been finalized and the output file descriptor has closed."
+      );
     });
 
-    archive.on('error', err => {
-      throw err;
+    archive.on("error", (err) => {
+      throw `failed to archive project: ${err}`;
     });
 
     archive.pipe(output);
 
-    archive.directory(path.join(__dirname, "/art-project"), true);
-  
-    archive.finalize();
+    archive.directory(PROJECT_PATH, true);
 
-      // TypeError [ERR_INVALID_ARG_VALUE]: The argument '
-      // week1 day1 : 1' is invalid encoding. Received 'encoding'
-      //     at new NodeError (node:internal/errors:329:5)
-      //     at assertEncoding (node:internal/fs/utils:136:11)
-      //     at getOptions (node:internal/fs/utils:311:5)
-      //     at Object.appendFileSync (node:fs:1565:13)
-      //     at /Users/jordan/Documents/web-dev/commitCanvas/back-end/index.js:75:16
-      //     at Array.forEach (<anonymous>)
-      //     at createProjectArtFile (/Users/jordan/Documents/web-dev/commitCanvas/back-end/index.js:73:14)
-      //     at /Users/jordan/Documents/web-dev/commitCanvas/back-end/index.js:122:5
-      //     at Layer.handle [as handle_request] (/Users/jordan/Documents/web-dev/commitCanvas/back-end/node_modules/express/lib/router/layer.js:95:5)
-      //     at next (/Users/jordan/Documents/web-dev/commitCanvas/back-end/node_modules/express/lib/router/route.js:137:13)
-  }
+    archive.finalize();
+  };
 
   // STEP 1 - PROCESS REQUEST BODY INTO VARIABLES
   let committedDays = getCommittedDays(request.body);
-  let userEmail = request.body.email[0];
-  let userUsername = request.body.username[0];
+
+  /* TODO: pass into simple git options
+    let userEmail = request.body.email[0];
+    let userUsername = request.body.username[0];
+
+    let git = new gitClient() // and pass in username and email
+  */
 
   // STEP 2 - PROCESSES COMMITTEDDAYS INTO PROJECT DIRECTORY/FILES
   if (committedDays.commitsRequired) {
     createProjectDirectory();
-    createProjectArtFile(committedDays);
+    createProjectArtFile(committedDays, git);
     zipDirectory();
 
     response.send("Thanks!! We received your graph state (^̮^)");
-    console.log("Requested project created!!")
+    console.log("Requested project created!!");
   } else {
     response.send("Oops!! Looks like you didn't submit anything (^̮^)");
   }
@@ -159,3 +163,40 @@ server.post("/", (request, response) => {
 server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+class GitClient {
+  constructor(email, username) {
+    this.email = email;
+    this.username = username;
+
+    // NOTE:
+    /* 
+      const options = { 
+         baseDir: process.cwd(),
+         binary: 'git',
+      };
+    */
+    this.gitClient = simpleGit(PROJECT_PATH, undefined);
+
+    // init git & first commit
+    this.gitClient.init();
+    this.gitClient.cwd({ path: PROJECT_PATH, root: true });
+
+    // inits .git, but commits to commitCanvas repo rather than the newly made one
+    // need to change working directory with .cwd but can't seem to figure out how to make it work
+    // even with the examples given
+  }
+
+  performCommit(message, date) {
+    this.gitClient.add(["./"]); // TODO: check this works okay, otherwise use PROJECT_PATH/.
+
+    // TODO: now pass in the message, date function args... and email and username
+    this.gitClient.commit("first commit!!", {
+      "--author": "",
+      "--email": "",
+      "--date": "",
+    });
+  }
+}
+
+// TODO: investigate why I couldn't just do `GitClient.performCommit()`
