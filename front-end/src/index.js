@@ -1,7 +1,6 @@
 let moment = require("moment");
 
 window.onload = () => {
-  // remove and replace initGraphState once graph state function fully developed
   GraphStateCtrl.initGraphState(0);
   UICtrl.renderGraph();
 };
@@ -10,9 +9,9 @@ window.onload = () => {
 const GraphStateCtrl = (function () {
   let _graphState = {};
 
-  // TO DO:
-  // ON PAGE LOAD - (function() {if(localStorage.graphState = something) {load from local} else {init at 0}})
-  // function renderGraphStateFromUsername(GithubUsername) {update state as graph from username}
+  // FUTURE DEVELOPMENTS:
+  // Pull user's GitHub graphState from username
+  // Store current graphState in local storage
 
   let initGraphState = (val) => {
     for (i = 1; i <= 52; i++) {
@@ -37,7 +36,7 @@ const GraphStateCtrl = (function () {
   };
 })();
 
-// RESPONSIBLE FOR MANAGING CONNECTIONS WITH SERVER
+//// RESPONSIBLE FOR MANAGING CONNECTIONS WITH SERVER
 const ClientCtrl = (function () {
   let requestRepo = (data) => {
     fetch("http://localhost:3000/", {
@@ -205,6 +204,7 @@ const UICtrl = (function () {
         scheduleList.firstChild.remove();
       }
     }
+    // draws schedule if no input from schedule
     if (Object.keys(schedule).length === 0) {
       const createdLine = document.createElement("tr");
       const createdLineDate = document.createElement("td");
@@ -215,7 +215,7 @@ const UICtrl = (function () {
       createdLine.appendChild(createdLineCommits);
       scheduleList.appendChild(createdLine);
     } else {
-      // draws schedule in UI based off schedule
+      // draws schedule based off schedule
       for (let Line in schedule) {
         const createdLine = document.createElement("tr");
         const createdLineDate = document.createElement("td");
@@ -299,7 +299,7 @@ const ScheduleCtrl = (function () {
   /* NOTE:
     backend thoughts:
     
-    daysSchedule // [date, date, date, date]
+    daysSchedule = [date, date, date, date]
 
     loop through daysSchedule:
       git.commit("first commit!!", {'--author': "", '--email': "", "--date": date.toUTCTimestamp() });
