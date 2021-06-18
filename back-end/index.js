@@ -74,7 +74,7 @@ server.post("/", (request, response) => {
           // commitDate.add some sort offset equivalent to that day
 
           // at this point you'll have the final date stamp of the commits to follow
-          for (let i = 0; i < amountCommitted; i++) {
+          for (i = 1; i < amountCommitted + 1; i++) {
             fs.appendFileSync(
               `${PROJECT_PATH}/art-file.txt`,
               `\n${week} day${days.indexOf(amountCommitted) + 1} commit: ${i}`,
@@ -141,10 +141,15 @@ server.post("/", (request, response) => {
   //// STEP 2 - PROCESSES COMMITTEDDAYS INTO PROJECT DIRECTORY/FILES
   if (committedDays.commitsRequired) {
     createProjectDirectory();
-    createProjectArtFile(committedDays, git);
-    zipDirectory();
+    git.init();
 
-    response.send("Thanks!! We received your graph state (^̮^)");
+    createProjectArtFile(committedDays, git);
+
+    zipDirectory();
+    
+    response.sendFile(path.join(PROJECT_PATH, "target.zip"), error => {
+      console.log(`ERROR sending zip-file: ${error}`);
+    });
     console.log("Requested project created!!");
   } else {
     response.send("Oops!! Looks like you didn't submit anything (^̮^)");
