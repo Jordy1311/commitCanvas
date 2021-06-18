@@ -13,7 +13,7 @@ server.use(express.json({ extended: false }));
 
 // TODO: later on we will investigate /tmp/ path
 // solves issue commits on the commit canvas itself
-const PROJECT_PATH = path.join(__dirname, "/art-project");
+const PROJECT_PATH = path.join("/tmp", "/art-project");
 
 server.post("/", (request, response) => {
   let getCommittedDays = (graphState) => {
@@ -37,7 +37,8 @@ server.post("/", (request, response) => {
     // delete existing directory
     if (PROJECT_PATH) {
       fs.rmdirSync(PROJECT_PATH, {
-        recursive: true,
+        recursive: true, 
+        force: true
       });
     }
     // make new directory
@@ -109,8 +110,10 @@ server.post("/", (request, response) => {
   };
 
   let zipDirectory = () => {
-    let output = fs.createWriteStream("target.zip");
+    let output = fs.createWriteStream(path.join(PROJECT_PATH, "target.zip"));
     let archive = archiver("zip");
+
+    archive.directory(PROJECT_PATH, true);
 
     output.on("close", () => {
       console.log(archive.pointer() + " total bytes");
@@ -124,8 +127,6 @@ server.post("/", (request, response) => {
     });
 
     archive.pipe(output);
-
-    archive.directory(PROJECT_PATH, true);
 
     archive.finalize();
   };
