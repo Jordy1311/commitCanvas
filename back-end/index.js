@@ -1,9 +1,10 @@
 const fs = require("fs");
+const archiver = require("archiver");
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const simpleGit = require("simple-git");
-const archiver = require("archiver");
+const moment = require("moment");
 
 const server = express();
 const port = 3000;
@@ -15,9 +16,6 @@ server.use(express.json({ extended: false }));
 const PROJECT_PATH = path.join(__dirname, "/art-project");
 
 server.post("/", (request, response) => {
-  // NOTE: common to move functions out of request handlers
-
-  // FUNCTIONS
   let getCommittedDays = (graphState) => {
     let committedDaysTempArray = {
       commitsRequired: false,
@@ -31,9 +29,8 @@ server.post("/", (request, response) => {
           committedDaysTempArray[Week] = currentlyEvaluatedWeek;
         }
       });
-    }
-
-    return committedDaysTempArray;
+    };
+    return committedDaysTempArray
   };
 
   let createProjectDirectory = () => {
@@ -44,7 +41,7 @@ server.post("/", (request, response) => {
       });
     }
     // make new directory
-    fs.mkdirSync(PROJECT_PATH, {}, (error) => {
+    fs.mkdirSync(PROJECT_PATH, {}, error => {
       throw `ERROR with making project directory: ${error}`;
     });
     // copy project readme.md
@@ -56,7 +53,7 @@ server.post("/", (request, response) => {
     fs.writeFileSync(
       path.join(PROJECT_PATH, "art-file.txt"),
       "These are your commits:\n",
-      (error) => {
+      error => {
         throw `ERROR creating the project art-file: ${error}`;
       }
     );
@@ -80,12 +77,8 @@ server.post("/", (request, response) => {
             fs.appendFileSync(
               `${PROJECT_PATH}/art-file.txt`,
               `\n${week} day${days.indexOf(amountCommitted) + 1} commit: ${i}`,
-              (error) => {
-                if (error)
-                  console.log(
-                    "ERROR while cycling data/adding to file:",
-                    error
-                  );
+              error => {
+                throw `ERROR creating the project art-file: ${error}`;
               }
             );
             gitClient.performCommit(
@@ -111,7 +104,7 @@ server.post("/", (request, response) => {
      * NOTE:
      * first approach can be simpler
      * 1. introduce choosing of year? default 2017 (far enough back)
-     * 2. loop day value to simulate commit times
+     * 2. loop day value to simulate commit * times
      */
   };
 
@@ -126,8 +119,8 @@ server.post("/", (request, response) => {
       );
     });
 
-    archive.on("error", (err) => {
-      throw `failed to archive project: ${err}`;
+    archive.on("error", error => {
+      throw `failed to archive project: ${error}`;
     });
 
     archive.pipe(output);
@@ -137,17 +130,14 @@ server.post("/", (request, response) => {
     archive.finalize();
   };
 
-  // STEP 1 - PROCESS REQUEST BODY INTO VARIABLES
+  //// STEP 1 - PROCESS REQUEST BODY INTO VARIABLES
   let committedDays = getCommittedDays(request.body);
+  let userEmail = request.body.email[0];
+  let userUsername = request.body.username[0];
 
-  /* TODO: pass into simple git options
-    let userEmail = request.body.email[0];
-    let userUsername = request.body.username[0];
+  let git = new GitClient(userEmail, userUsername);
 
-    let git = new gitClient() // and pass in username and email
-  */
-
-  // STEP 2 - PROCESSES COMMITTEDDAYS INTO PROJECT DIRECTORY/FILES
+  //// STEP 2 - PROCESSES COMMITTEDDAYS INTO PROJECT DIRECTORY/FILES
   if (committedDays.commitsRequired) {
     createProjectDirectory();
     createProjectArtFile(committedDays, git);
