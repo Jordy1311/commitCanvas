@@ -110,25 +110,25 @@ server.post("/", (request, response) => {
             );
           }
         });
+  let commitProjectArtFile = async (committedDays, gitClient) => {
+    for ([weekName, datesArray] of Object.entries(committedDays)) {
+      if (weekName.includes("week")) {
+
+        for (i=0; i<datesArray.length; i++) {
+          fs.appendFileSync(
+            `${PROJECT_PATH}/art-file.txt`,
+            `${datesArray[i]}\n`,
+            error => {
+              throw `ERROR creating the project art-file: ${error}`;
+            }
+          );
+          await gitClient.performCommit(
+            "Brush stroke!",
+            datesArray[i]
+          );
+        }
       }
     }
-
-    // so each time it writes it also commits to the correct date in the past
-    // TALK TO FLO ABOUT RELATIVE DATES (dates not lining up with what GitHub shows
-    // (the first cube is for day and the next for tomorrow and so on but GitHub is a glance to the past))
-    //
-    // Might I almost need to different graphState generation functions that puts the dates of the cubes
-    // in the future if the user is requesting a schedule but in the past, somehow, if they request a repo
-    // requesting a repo also brings in the complication of whether or not something will overlap something
-    // but also the darkness of the cubes seems if someone does a lot of work usually, the commitCanvas
-    // will need to submit more than 1,2,3,4 times
-
-    /*
-     * NOTE:
-     * first approach can be simpler
-     * 1. introduce choosing of year? default 2017 (far enough back)
-     * 2. loop day value to simulate commit * times
-     */
   };
 
   let zipDirectory = () => {
