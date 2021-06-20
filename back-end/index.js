@@ -165,26 +165,23 @@ class GitClient {
     this.email = email;
     this.username = username;
 
-    // this.gitClient.cwd({ path: PROJECT_PATH, root: true });
-    // inits .git, but commits to commitCanvas repo rather than the newly made one
-    // need to change working directory with .cwd but can't seem to figure out how to make it work
-    // even with the examples given
-  }
-  
-  init() {
     const options = { 
-        baseDir: PROJECT_PATH,
-        binary: 'git',
+      baseDir: PROJECT_PATH,
+      binary: 'git',
     };
 
     this.gitClient = simpleGit(options);
-    this.gitClient.init();
+    this.gitClient.addConfig("user.email", this.email).addConfig("user.name", this.username);
+  }
+  
+  async init() {
+    await this.gitClient.init();
   };
 
-  performCommit(message, date, email, username) {
-    this.gitClient.addConfig("user.email", email).addConfig("user.name", username);
-    this.gitClient.add(`${PROJECT_PATH}/./*`);
-    this.gitClient.commit(message, { "--date": date });
+  async performCommit(message, date) {
+    await this.gitClient
+      .add(`${PROJECT_PATH}/./*`)
+      .commit(message, { "--date": date });
     };
   };
 
