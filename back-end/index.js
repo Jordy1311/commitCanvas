@@ -30,15 +30,28 @@ server.post("/", (request, response) => {
       commitsRequired: false,
     };
 
-    for (let Week in graphState) {
-      let currentlyEvaluatedWeek = graphState[Week];
-      currentlyEvaluatedWeek.forEach((dayValue) => {
+    for ([weekName, daysArray] of Object.entries(graphState))  {
+      daysArray.forEach((dayValue) => {
+        dayOffset++;
         if (dayValue > 0) {
           committedDaysTempArray.commitsRequired = true;
-          committedDaysTempArray[Week] = currentlyEvaluatedWeek;
+          if (committedDaysTempArray[weekName]) {
+            // for loop at dayValue.length
+            for (i=0; i<dayValue; i++) {
+              committedDaysTempArray[weekName].push(generateDate(dayOffset));
+            }
+          } else {
+            committedDaysTempArray[weekName] = [];
+            for (i=0; i<dayValue; i++) {
+              committedDaysTempArray[weekName].push(generateDate(dayOffset));
+            }
+          }
         }
       });
-    };
+    }
+
+    // please remove me once all done
+    console.log(committedDaysTempArray);
     return committedDaysTempArray
   };
 
