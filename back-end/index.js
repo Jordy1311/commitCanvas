@@ -16,7 +16,16 @@ server.use(express.json({ extended: false }));
 const PROJECT_PATH = path.join("/tmp", "/art-project");
 
 server.post("/", (request, response) => {
+  let generateDate = (offset) => {
+    let date = moment("2020-01-05T09").utc();
+    if (offset > 0) {
+      date.add(offset, "days");
+    }
+    return date.toString()
+  };
+
   let getCommittedDays = (graphState) => {
+    let dayOffset = 0;
     let committedDaysTempArray = {
       commitsRequired: false,
     };
