@@ -15,7 +15,7 @@ server.use(express.json({ extended: false }));
 // solves issue commits on the commit canvas itself
 const PROJECT_PATH = path.join("/tmp", "/art-project");
 
-server.post("/", (request, response) => {
+server.post("/", async (request, response) => {
   let generateDate = (offset) => {
     let date = moment("2020-01-05T09").utc();
     if (offset > 0) {
@@ -82,34 +82,6 @@ server.post("/", (request, response) => {
     );
   };
 
-  let createProjectArtFile = (committedDays, gitClient) => {
-    // loop through committed days and write/commit when dayvalue > 0
-    for (const [week, days] of Object.entries(committedDays)) {
-      let commitDate = moment(); // TODO: initially set it to Jan 1 2017
-
-      if (week.includes("week")) {
-        // TODO: need to find what week we're in
-        // commitDate.add some sort offset equivalent to that week
-
-        days.forEach((amountCommitted, theDay) => {
-          // TODO: now we have theDay
-          // commitDate.add some sort offset equivalent to that day
-
-          // at this point you'll have the final date stamp of the commits to follow
-          for (i = 1; i < amountCommitted + 1; i++) {
-            fs.appendFileSync(
-              `${PROJECT_PATH}/art-file.txt`,
-              `\n${week} day${days.indexOf(amountCommitted) + 1} commit: ${i}`,
-              error => {
-                throw `ERROR creating the project art-file: ${error}`;
-              }
-            );
-            gitClient.performCommit(
-              `\n${week} day${days.indexOf(amountCommitted) + 1} commit: ${i}`,
-              commitDate.toString()
-            );
-          }
-        });
   let commitProjectArtFile = async (committedDays, gitClient) => {
     for ([weekName, datesArray] of Object.entries(committedDays)) {
       if (weekName.includes("week")) {
@@ -158,20 +130,23 @@ server.post("/", (request, response) => {
   let userEmail = request.body.email[0];
   let userUsername = request.body.username[0];
 
-  let git = new GitClient(userEmail, userUsername);
-
+  
   //// STEP 2 - PROCESSES COMMITTEDDAYS INTO PROJECT DIRECTORY/FILES
+  
   if (committedDays.commitsRequired) {
     createProjectDirectory();
-    git.init();
-
-    createProjectArtFile(committedDays, git);
-
-    zipDirectory();
     
-    response.sendFile(path.join(PROJECT_PATH, "target.zip"), error => {
-      console.log(`ERROR sending zip-file: ${error}`);
-    });
+    let git = new GitClient(userEmail, userUsername);
+
+    await git.init();
+
+    await commitProjectArtFile(committedDays, git);
+
+    // zipDirectory();
+    
+    // response.sendFile(path.join(PROJECT_PATH, "target.zip"), error => {
+    //   console.log(`ERROR sending zip-file: ${error}`);
+    // });
     console.log("Requested project created!!");
   } else {
     response.send("Oops!! Looks like you didn't submit anything (^̮^)");
