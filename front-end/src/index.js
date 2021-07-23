@@ -6,22 +6,20 @@ window.onload = () => {
 };
 
 //// HOLDS THE CURRENT STATE INFORMATION REGARDING THE GRAPH
-const GraphStateCtrl = (function () {
+const GraphStateCtrl = (() => {
   let _graphState = {};
 
   // FUTURE DEVELOPMENTS:
   // Pull user's GitHub graphState from username
   // Store current graphState in local storage
 
-  let initGraphState = (val) => {
+  let initGraphState = val => {
     for (i = 1; i <= 52; i++) {
       _graphState[`week${i}`] = [val, val, val, val, val, val, val];
     }
   };
 
-  let updateGraphState = (week, day, newVal) => {
-    _graphState[week][day] = newVal;
-  };
+  let updateGraphState = (week, day, newVal) => _graphState[week][day] = newVal
 
   let inputUserInfo = (email, username) => {
     _graphState["email"] = [email];
@@ -37,8 +35,8 @@ const GraphStateCtrl = (function () {
 })();
 
 //// RESPONSIBLE FOR MANAGING CONNECTIONS WITH SERVER
-const ClientCtrl = (function () {
-  let requestRepo = (data) => {
+const ClientCtrl = (() => {
+  let requestRepo = data => {
     fetch("http://localhost:3000/", {
       method: "POST",
       headers: {
@@ -46,11 +44,11 @@ const ClientCtrl = (function () {
       },
       body: JSON.stringify(data),
     })
-      .then((response) => response.text())
-      .then((data) => {
+      .then(response => response.text())
+      .then(data => {
         console.log(data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error("Something went wrong!! ||", error);
       });
   };
@@ -61,7 +59,7 @@ const ClientCtrl = (function () {
 })();
 
 //// RESPONSIBLE FOR WATCHING AND RENDERING ELEMENTS IN THE UI
-const UICtrl = (function () {
+const UICtrl = (() => {
   const helpButton = document.getElementById("help-button");
   const siteInstructions = document.getElementById("site-instructions-group");
 
@@ -107,12 +105,12 @@ const UICtrl = (function () {
       }
     }
     // draws graph in UI based off current graphState
-    for (let Week in GraphStateCtrl.graphState) {
+    for (Week in GraphStateCtrl.graphState) {
       let currentlyEvaluatedWeek = GraphStateCtrl.graphState[Week];
       const createdWeek = document.createElement("div");
       createdWeek.id = Week;
       let day = 0;
-      currentlyEvaluatedWeek.forEach((dayValue) => {
+      currentlyEvaluatedWeek.forEach(dayValue => {
         const createdDay = document.createElement("div");
         createdDay.id = day;
         createdDay.className = `commit-${dayValue}`;
@@ -123,14 +121,12 @@ const UICtrl = (function () {
     }
   };
 
-  let clearGraph = (event) => {
-    event.preventDefault();
+  let clearGraph = () => {
     GraphStateCtrl.initGraphState(0);
     renderGraph();
   };
 
-  let fillGraph = (event) => {
-    event.preventDefault();
+  let fillGraph = () => {
     GraphStateCtrl.initGraphState(4);
     renderGraph();
   };
@@ -140,32 +136,31 @@ const UICtrl = (function () {
     ERASE = "erase",
     DARK = "dark";
   let drawMode = NORMAL;
-  let drawModeSwitch = (newDrawMode) => {
-    drawMode = newDrawMode;
-  };
+  let drawModeSwitch = newDrawMode => drawMode = newDrawMode;
+
   // isDrawing switch
   let isDrawing = false;
   let isDrawingSwitch = () => (isDrawing = !isDrawing);
 
   // draw behaviour functions
-  let mouseDownUpDraw = (event) => {
+  let mouseDownUpDraw = event => {
     isDrawingSwitch();
     draw(event);
   };
-  let mouseOverDraw = (event) => {
+  let mouseOverDraw = event => {
     draw(event);
   };
   let leftDrawArea = () => {
     isDrawing = false;
   };
-  let enteredDrawArea = (event) => {
+  let enteredDrawArea = event => {
     // if statement required to check if left-mouse is being clicked
     if (event.buttons === 1) {
       isDrawing = true;
     }
   };
 
-  let draw = (event) => {
+  let draw = event => {
     const cubeFillValue = parseInt(event.target.className.charAt(7));
     if (isDrawing && drawMode === NORMAL) {
       if (cubeFillValue === "4" && event.type === "mousedown") {
@@ -190,14 +185,14 @@ const UICtrl = (function () {
     }
   };
 
-  let updateGraphState = (event) => {
+  let updateGraphState = event => {
     let weekToUpdate = event.target.parentNode.id;
     let dayToUpdate = event.target.id;
     let updatedVal = parseInt(event.target.className.charAt(7));
     GraphStateCtrl.updateGraphState(weekToUpdate, dayToUpdate, updatedVal);
   };
 
-  let renderSchedule = (schedule) => {
+  let renderSchedule = schedule => {
     // deletes schedule if already present
     if (scheduleList.hasChildNodes()) {
       while (scheduleList.firstChild) {
@@ -216,12 +211,12 @@ const UICtrl = (function () {
       scheduleList.appendChild(createdLine);
     } else {
       // draws schedule based off schedule
-      for (let Line in schedule) {
+      for (Line in schedule) {
         const createdLine = document.createElement("tr");
         const createdLineDate = document.createElement("td");
         const createdLineCommits = document.createElement("td");
         createdLineDate.innerHTML = Line;
-        if (schedule[Line] == 1) {
+        if (schedule[Line] === 1) {
           createdLineCommits.innerHTML = `${schedule[Line]} commit`;
         } else {
           createdLineCommits.innerHTML = `${schedule[Line]} commits`;
@@ -233,9 +228,7 @@ const UICtrl = (function () {
     };
   };
 
-  let downloadGitRepo = (event) => {
-    event.preventDefault();
-
+  let downloadGitRepo = () => {
     let userEmail = emailField.value;
     let userUsername = usernameField.value;
     GraphStateCtrl.inputUserInfo(userEmail, userUsername);
@@ -258,13 +251,11 @@ const UICtrl = (function () {
   darkRadioOption.addEventListener("click", () => drawModeSwitch(DARK));
   fillGraphButton.addEventListener("click", fillGraph);
   
-  downloadGitButton.addEventListener("click", (event) => {
-    event.preventDefault();
+  downloadGitButton.addEventListener("click", () => {
     hideElement(scheduleTable);
     showElement(userInfoForm, "block");
   });
-  generateScheduleButton.addEventListener("click", (event) => {
-    event.preventDefault();
+  generateScheduleButton.addEventListener("click", () => {
     hideElement(userInfoForm);
     showElement(scheduleTable, "table");
     ScheduleCtrl.createSchedule(GraphStateCtrl.graphState);
@@ -279,11 +270,8 @@ const UICtrl = (function () {
 })();
 
 //// RESPONSIBLE FOR GENERATING THE SCHEDULE UPON REQUEST
-const ScheduleCtrl = (function () {
-  let _schedule = {};
-
-  // TODO: we can use the exact same thing in the backend, and as talked about offset by 2017
-  let generateDate = (offset) => {
+const ScheduleCtrl = (() => {
+  let generateDate = offset => {
     let date = moment();
     if (offset > 0) {
       date.add(offset, "days");
@@ -296,25 +284,16 @@ const ScheduleCtrl = (function () {
     });
   };
 
-  /* NOTE:
-    backend thoughts:
-    
-    daysSchedule = [date, date, date, date]
-
-    loop through daysSchedule:
-      git.commit("first commit!!", {'--author': "", '--email': "", "--date": date.toUTCTimestamp() });
-  */
-
-  let createSchedule = (graphState) => {
+  let createSchedule = graphState => {
     let _schedule = {};
     let dayOffset = 0;
 
     // iterate through graphState (year)
-    for (let WeekID in graphState) {
+    for (WeekID in graphState) {
       let weekArray = graphState[WeekID];
 
       // iterate through week's values
-      weekArray.forEach((dayValue) => {
+      weekArray.forEach(dayValue => {
         if (dayValue > 0) {
           _schedule[generateDate(dayOffset)] = dayValue;
         }
@@ -324,8 +303,6 @@ const ScheduleCtrl = (function () {
 
     if (dayOffset !== 0) {
       UICtrl.renderSchedule(_schedule);
-    } else {
-
     }
   };
 
