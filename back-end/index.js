@@ -16,7 +16,7 @@ server.use(express.json({ extended: false }));
 const PROJECT_PATH = path.join("/tmp", "/art-project");
 
 server.post("/", async (request, response) => {
-  let generateDate = (offset) => {
+  let generateDate = offset => {
     let date = moment("2020-01-05T09").utc();
     if (offset > 0) {
       date.add(offset, "days");
@@ -24,14 +24,14 @@ server.post("/", async (request, response) => {
     return date.toString()
   };
 
-  let getCommittedDays = (graphState) => {
+  let getCommittedDays = graphState => {
     let dayOffset = 0;
     let committedDaysTempArray = {
       commitsRequired: false,
     };
 
     for ([weekName, daysArray] of Object.entries(graphState))  {
-      daysArray.forEach((dayValue) => {
+      daysArray.forEach(dayValue => {
         dayOffset++;
         if (dayValue > 0) {
           committedDaysTempArray.commitsRequired = true;
