@@ -9,11 +9,24 @@ const moment = require("moment");
 const server = express();
 const port = 3000;
 server.use(cors({ origin: "http://localhost:8080" }));
+  // terrible idea
+// server.use(cors('*'))
 server.use(express.json({ extended: false }));
 
 // TODO: later on we will investigate /tmp/ path
 // solves issue commits on the commit canvas itself
-const PROJECT_PATH = path.join("/tmp", "/art-project");
+const PROJECT_PATH = path.join(__dirname, "project");
+const DOWNLOAD_PATH = path.join(__dirname, "target.zip")
+
+server.get("/", (req, res) => {
+  res.download(DOWNLOAD_PATH,'project.zip', err => {
+    if (!err) {
+      console.log("REQUESTED PROJECT SENT!!")
+      return
+    }
+    console.log("SOMETHING DIDN'T WORK!!")
+  })
+});
 
 server.post("/", async (request, response) => {
   let generateDate = offset => {
@@ -51,7 +64,7 @@ server.post("/", async (request, response) => {
     }
 
     // please remove me once all done
-    console.log(committedDaysTempArray);
+    // console.log(committedDaysTempArray);
     return committedDaysTempArray
   };
 
@@ -103,26 +116,26 @@ server.post("/", async (request, response) => {
     }
   };
 
-  let zipDirectory = () => {
-    let output = fs.createWriteStream(path.join(PROJECT_PATH, "target.zip"));
+  let zipDirectory = async () => {
+    let output = fs.createWriteStream(path.join(__dirname, "target.zip"));
     let archive = archiver("zip");
 
-    archive.directory(PROJECT_PATH, true);
+    archive.directory(PROJECT_PATH, false);
 
-    output.on("close", () => {
-      console.log(archive.pointer() + " total bytes");
-      console.log(
-        "archiver has been finalized and the output file descriptor has closed."
-      );
+    await output.on("close", () => {
+      // console.log(archive.pointer() + " total bytes");
+      // console.log("archiver has been finalized and the output file descriptor has closed.");
     });
 
-    archive.on("error", error => {
-      throw `failed to archive project: ${error}`;
+    await archive.on("error", error => {
+      throw `ERROR while trying to archive project: ${error}`;
     });
 
-    archive.pipe(output);
+    await archive.pipe(output);
 
-    archive.finalize();
+    await archive.finalize();
+
+    console.log("PROJECT ZIPPED!!")
   };
 
   //// STEP 1 - PROCESS REQUEST BODY INTO VARIABLES
@@ -130,7 +143,6 @@ server.post("/", async (request, response) => {
   let userEmail = request.body.email[0];
   let userUsername = request.body.username[0];
 
-  
   //// STEP 2 - PROCESSES COMMITTEDDAYS INTO PROJECT DIRECTORY/FILES
   
   if (committedDays.commitsRequired) {
@@ -142,12 +154,9 @@ server.post("/", async (request, response) => {
 
     await commitProjectArtFile(committedDays, git);
 
-    // zipDirectory();
-    
-    // response.sendFile(path.join(PROJECT_PATH, "target.zip"), error => {
-    //   console.log(`ERROR sending zip-file: ${error}`);
-    // });
-    console.log("Requested project created!!");
+    await zipDirectory();
+
+    response.send()
   } else {
     response.send("Oops!! Looks like you didn't submit anything (^̮^)");
   }
