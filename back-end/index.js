@@ -9,8 +9,6 @@ const moment = require("moment");
 const server = express();
 const port = 3000;
 server.use(cors({ origin: "http://localhost:8080" }));
-  // terrible idea
-// server.use(cors('*'))
 server.use(express.json({ extended: false }));
 
 // TODO: later on we will investigate /tmp/ path
@@ -26,7 +24,7 @@ server.get("/", (req, res) => {
     }
     console.log("SOMETHING DIDN'T WORK!!")
   })
-});
+})
 
 server.post("/", async (request, response) => {
   let generateDate = offset => {
