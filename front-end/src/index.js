@@ -64,8 +64,7 @@ const ClientCtrl = (() => {
     })
       .then(response => {
         if (response.status === 200) {
-          fetch(URL)
-          .then(res => console.log("I CALLED FOR THE DOWNLOAD AND GOT BACK STATUS:", res.status))
+          window.open(URL)
         }
       })
       .catch(error => {
