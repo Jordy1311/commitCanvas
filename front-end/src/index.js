@@ -1,4 +1,5 @@
-let moment = require("moment");
+const moment = require("moment");
+const request = require("superagent")
 
 window.onload = () => {
   GraphStateCtrl.initGraphState(0);
@@ -37,16 +38,35 @@ const GraphStateCtrl = (() => {
 //// RESPONSIBLE FOR MANAGING CONNECTIONS WITH SERVER
 const ClientCtrl = (() => {
   let requestRepo = data => {
-    fetch("http://localhost:3000/", {
+    const URL = "http://localhost:3000/"
+
+    // // USING SUPERAGENT
+    // request
+    //   .post(URL)
+    //   .send(JSON.stringify(data))
+    //   .then(res => {
+    //     if (res.status === 200) {
+    //       request
+    //         .get(URL)
+    //         .then(res => console.log(res))
+    //         .catch(err => console.log(err))
+    //     }
+    //   })
+    //   .catch(err => console.log(err))
+    // }
+
+    fetch(URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     })
-      .then(response => response.text())
-      .then(data => {
-        console.log(data);
+      .then(response => {
+        if (response.status === 200) {
+          fetch(URL)
+          .then(res => console.log("I CALLED FOR THE DOWNLOAD AND GOT BACK STATUS:", res.status))
+        }
       })
       .catch(error => {
         console.error("Something went wrong!! ||", error);
