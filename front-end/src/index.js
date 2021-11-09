@@ -22,9 +22,10 @@ const GraphStateCtrl = (() => {
 
   let updateGraphState = (week, day, newVal) => _graphState[week][day] = newVal
 
-  let inputUserInfo = (email, username) => {
-    _graphState["email"] = [email]
-    _graphState["username"] = [username]
+  let inputUserInfo = (email, username, offset) => {
+    _graphState.email = email
+    _graphState.username = username
+    _graphState.yearOffset = offset.value
   }
 
   return {
@@ -104,11 +105,12 @@ const UICtrl = (() => {
 
   const emailField = document.getElementById("user-email-field")
   const usernameField = document.getElementById("user-username-field")
+  const yearOffsetField = document.getElementById("year-offset")
     
   // FUNCTIONS:
   let hideShowHelp = () => {
-    if (siteInstructions.style.display !== "flex") {
-      siteInstructions.style.display = "flex"
+    if (siteInstructions.style.display !== "block") {
+      siteInstructions.style.display = "block"
     } else {
       siteInstructions.style.display = "none"
     }
@@ -251,7 +253,7 @@ const UICtrl = (() => {
   let downloadGitRepo = () => {
     let userEmail = emailField.value
     let userUsername = usernameField.value
-    GraphStateCtrl.inputUserInfo(userEmail, userUsername)
+    GraphStateCtrl.inputUserInfo(userEmail, userUsername, yearOffsetField)
 
     ClientCtrl.requestRepo(GraphStateCtrl.graphState)
   }
@@ -277,8 +279,8 @@ const UICtrl = (() => {
   })
   generateScheduleButton.addEventListener("click", () => {
     hideElement(userInfoForm)
-    ScheduleCtrl.createSchedule(GraphStateCtrl.graphState)
     showElement(scheduleOutput, "flex")
+    ScheduleCtrl.createSchedule(GraphStateCtrl.graphState, yearOffsetField.value)
   })
 
   confirmDownloadButton.addEventListener("click", downloadGitRepo)
@@ -304,7 +306,7 @@ const ScheduleCtrl = (() => {
     })
   }
 
-  let createSchedule = graphState => {
+  let createSchedule = (graphState) => {
     let _schedule = {}
     let dayOffset = 0
 
