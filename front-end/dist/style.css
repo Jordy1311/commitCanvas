@@ -64,24 +64,10 @@ main {
   text-align: center;
 }
 
+/* ---- USER INSTRUCTIONS STYLES ---- */
 #site-instructions-group {
   display: none;
-  flex-direction: column;
-  align-items: center;
-}
-#site-instructions {
-  width: 80%;
-  display: flex;
-  justify-content: center;
-}
-#site-instructions * {
-  margin: 5px;
-}
-.instructions-body {
-  width: 30%;
-}
-.instructions-OR {
-  align-self: center;
+  text-align: center;
 }
 
 #contribution-graph-window {
