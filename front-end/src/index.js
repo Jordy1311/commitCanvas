@@ -96,6 +96,7 @@ const UICtrl = (() => {
   )
   
   const scheduleTable = document.getElementById("schedule-table")
+  const scheduleOutput = document.getElementById("schedule-output")
   const scheduleList = document.getElementById("schedule-list")
   const userInfoForm = document.getElementById("user-info-form")
 
@@ -271,13 +272,13 @@ const UICtrl = (() => {
   fillGraphButton.addEventListener("click", fillGraph)
   
   downloadGitButton.addEventListener("click", () => {
-    hideElement(scheduleTable)
+    hideElement(scheduleOutput)
     showElement(userInfoForm, "block")
   })
   generateScheduleButton.addEventListener("click", () => {
     hideElement(userInfoForm)
-    showElement(scheduleTable, "table")
     ScheduleCtrl.createSchedule(GraphStateCtrl.graphState)
+    showElement(scheduleOutput, "flex")
   })
 
   confirmDownloadButton.addEventListener("click", downloadGitRepo)
