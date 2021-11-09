@@ -70,6 +70,7 @@ main {
   text-align: center;
 }
 
+/* ---- CONTRIBUTION GRAPH STYLES ---- */
 #contribution-graph-window {
   width: 650px;
   height: 150px;
@@ -105,6 +106,7 @@ main {
   margin: 3px 5px 3px 0px;
 }
 
+/* ---- OUTPUT SELECTOR BUTTONS STYLES ---- */
 #output-button-group {
   display: flex;
   justify-content: center;
@@ -114,23 +116,16 @@ main {
   margin: 3px;
 }
 
-#user-info-form {
+/* ---- OUTPUT OPT1: OUTPUT SCHEDULE STYLES ---- */
+#schedule-output {
   display: none;
-}
-.form {
-  width: 60%;
-  align-items: center;
-}
-.form-items {
-  display: flex;
+
   flex-direction: column;
   align-items: center;
 }
-
 #schedule-table {
   table-layout: fixed;
-  display: none;
-  width: 50%;
+  width: 70%;
   height: 100px;
   margin: 25px;
   padding: 1em;
