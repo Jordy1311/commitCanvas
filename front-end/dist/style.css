@@ -33,24 +33,28 @@ p {
   margin-top: 1rem;
 }
 
+/* ---- SECTION LAYOUT STYLES ---- */
 body {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  margin: 0px;
+  padding: 0px;
 }
-#header {
-  height: 24px;
+nav {
+  padding: 2rem;
   display: flex;
   justify-content: flex-end;
 }
-#site-container {
-  flex-grow: 1;
-  width: 90%;
+main {
+  width: 50vw;
+  min-width: 55rem; 
+  max-width: 80rem;
+
   margin: auto;
-  padding: auto;
+  margin-top: 2.5rem;
+  
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 #site-title {
   color: #2a9745;
