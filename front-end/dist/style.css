@@ -136,6 +136,28 @@ main {
   text-align: center;
 }
 
+/* ---- OUTPUT OPT2: USER INFO ON DOWNLOAD STYLES ---- */
+#user-info-form {
+  display: none;
+}
+.form {
+  width: 70%;
+  max-width: 50rem;
+  align-items: center;
+}
+.form-items {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.user-info-input {
+  width: 80%;
+  max-width: 40rem;
+}
+
+/* ---- COMMIT CUBE STYLES ---- */
 .commit-0 {
   width: 8px;
   height: 8px;
