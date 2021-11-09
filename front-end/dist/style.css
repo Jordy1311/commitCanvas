@@ -1,13 +1,36 @@
+/* ---- GLOBAL STYLES ---- */
 a {
   text-decoration: none;
   cursor: pointer;
 }
 input {
   text-align: center;
-  width: auto;
+  margin-bottom: 1rem;
+}
+select {
+  margin-bottom: 1rem;
 }
 .button {
   margin: 0 2px;
+}
+h1 {
+  font-size: 6rem;
+  font-weight: 900;
+  margin-top: 2rem;
+}
+h2 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+}
+h3 {
+  font-size: 2.5rem;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+p {
+  font-size: 1.5rem;
+  margin-top: 1rem;
 }
 
 body {
