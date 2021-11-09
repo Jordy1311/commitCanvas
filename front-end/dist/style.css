@@ -1,33 +1,60 @@
+/* ---- GLOBAL STYLES ---- */
 a {
   text-decoration: none;
   cursor: pointer;
 }
 input {
   text-align: center;
-  width: auto;
+  margin-bottom: 1rem;
+}
+select {
+  margin-bottom: 1rem;
 }
 .button {
   margin: 0 2px;
 }
-
-body {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+h1 {
+  font-size: 6rem;
+  font-weight: 900;
+  margin-top: 2rem;
 }
-#header {
-  height: 24px;
+h2 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+}
+h3 {
+  font-size: 2.5rem;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+p {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* ---- SECTION LAYOUT STYLES ---- */
+body {
+  margin: 0px;
+  padding: 0px;
+}
+nav {
+  padding: 2rem;
   display: flex;
   justify-content: flex-end;
 }
-#site-container {
-  flex-grow: 1;
-  width: 90%;
+main {
+  width: 50vw;
+  min-width: 55rem; 
+  max-width: 80rem;
+
   margin: auto;
-  padding: auto;
+  margin-top: 2.5rem;
+  
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 #site-title {
   color: #2a9745;
@@ -37,26 +64,13 @@ body {
   text-align: center;
 }
 
+/* ---- USER INSTRUCTIONS STYLES ---- */
 #site-instructions-group {
   display: none;
-  flex-direction: column;
-  align-items: center;
-}
-#site-instructions {
-  width: 80%;
-  display: flex;
-  justify-content: center;
-}
-#site-instructions * {
-  margin: 5px;
-}
-.instructions-body {
-  width: 30%;
-}
-.instructions-OR {
-  align-self: center;
+  text-align: center;
 }
 
+/* ---- CONTRIBUTION GRAPH STYLES ---- */
 #contribution-graph-window {
   width: 650px;
   height: 150px;
@@ -92,6 +106,7 @@ body {
   margin: 3px 5px 3px 0px;
 }
 
+/* ---- OUTPUT SELECTOR BUTTONS STYLES ---- */
 #output-button-group {
   display: flex;
   justify-content: center;
@@ -101,23 +116,16 @@ body {
   margin: 3px;
 }
 
-#user-info-form {
+/* ---- OUTPUT OPT1: OUTPUT SCHEDULE STYLES ---- */
+#schedule-output {
   display: none;
-}
-.form {
-  width: 60%;
-  align-items: center;
-}
-.form-items {
-  display: flex;
+
   flex-direction: column;
   align-items: center;
 }
-
 #schedule-table {
   table-layout: fixed;
-  display: none;
-  width: 50%;
+  width: 70%;
   height: 100px;
   margin: 25px;
   padding: 1em;
@@ -128,6 +136,28 @@ body {
   text-align: center;
 }
 
+/* ---- OUTPUT OPT2: USER INFO ON DOWNLOAD STYLES ---- */
+#user-info-form {
+  display: none;
+}
+.form {
+  width: 70%;
+  max-width: 50rem;
+  align-items: center;
+}
+.form-items {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.user-info-input {
+  width: 80%;
+  max-width: 40rem;
+}
+
+/* ---- COMMIT CUBE STYLES ---- */
 .commit-0 {
   width: 8px;
   height: 8px;
