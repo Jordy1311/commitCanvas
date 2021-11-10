@@ -143,7 +143,7 @@ server.post("/", async (request, response) => {
   if (committedDays.commitsRequired) {
     createProjectDirectory()
     
-    let git = new GitClient(userEmail, userUsername)
+    const git = new GitClient(userEmail, userUsername)
     await git.init()
 
     await commitProjectArtFile(committedDays, git)
@@ -162,8 +162,8 @@ server.listen(port, () => {
 
 class GitClient {
   constructor(email, username) {
-    this.email = email
-    this.username = username
+    // this.email = email
+    // this.username = username
 
     const options = { 
       baseDir: PROJECT_PATH,
