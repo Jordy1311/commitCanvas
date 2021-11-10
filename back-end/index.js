@@ -27,37 +27,42 @@ server.get("/", (req, res) => {
 })
 
 server.post("/", async (request, response) => {
-  let generateDate = offset => {
-    let date = moment("2020-01-05T09").utc()
-    if (offset > 0) {
-      date.add(offset, "days")
+  //// STEP 1 - PROCESS REQUEST BODY INTO VARIABLES
+  const userEmail = request.body.email[0]
+  const userUsername = request.body.username[0]
+  const userYearOffset = request.body.yearOffset[0]
+
+  let generateDate = dayOfYearIndex => {
+    let date = moment(`${userYearOffset}`, "YYYY-MM-DD")
+    if (dayOfYearIndex > 0) {
+      date.add(dayOfYearIndex, "days")
     }
     return date.toString()
   }
 
   let getCommittedDays = graphState => {
-    let dayOffset = 0
+    let dayOfYearIndex = 0
     let committedDaysTempArray = {
       commitsRequired: false,
     }
 
     for ([weekName, daysArray] of Object.entries(graphState))  {
       daysArray.forEach(dayValue => {
-        dayOffset++
-        if (dayValue > 0) {
+        // > 0 makes sure commit && < 4 stops userYearOffset going into for loop
+        if (dayValue > 0 && dayValue <= 4) {
           committedDaysTempArray.commitsRequired = true
           if (committedDaysTempArray[weekName]) {
-            // for loop at dayValue.length
             for (i=0; i<dayValue; i++) {
-              committedDaysTempArray[weekName].push(generateDate(dayOffset))
+              committedDaysTempArray[weekName].push(generateDate(dayOfYearIndex))
             }
           } else {
             committedDaysTempArray[weekName] = []
             for (i=0; i<dayValue; i++) {
-              committedDaysTempArray[weekName].push(generateDate(dayOffset))
+              committedDaysTempArray[weekName].push(generateDate(dayOfYearIndex))
             }
           }
         }
+        dayOfYearIndex++
       })
     }
 
@@ -128,17 +133,17 @@ server.post("/", async (request, response) => {
     console.log("PROJECT ZIPPED!!")
   }
 
-  //// STEP 1 - PROCESS REQUEST BODY INTO VARIABLES
+  //// STEP 2 - GET COMMITTED DAYS IF COMMITS HAVE BEEN MADE
   let committedDays = getCommittedDays(request.body)
-  let userEmail = request.body.email[0]
-  let userUsername = request.body.username[0]
+  console.log(committedDays)
+  // console.log(request.body)
 
-  //// STEP 2 - PROCESSES COMMITTEDDAYS INTO PROJECT DIRECTORY/FILES
+  //// STEP 3 - PROCESSES COMMITTEDDAYS INTO PROJECT DIRECTORY/FILES
   
   if (committedDays.commitsRequired) {
     createProjectDirectory()
     
-    let git = new GitClient(userEmail, userUsername)
+    const git = new GitClient(userEmail, userUsername)
     await git.init()
 
     await commitProjectArtFile(committedDays, git)
@@ -157,8 +162,8 @@ server.listen(port, () => {
 
 class GitClient {
   constructor(email, username) {
-    this.email = email
-    this.username = username
+    // this.email = email
+    // this.username = username
 
     const options = { 
       baseDir: PROJECT_PATH,
