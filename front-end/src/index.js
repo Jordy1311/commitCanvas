@@ -23,9 +23,9 @@ const GraphStateCtrl = (() => {
   let updateGraphState = (week, day, newVal) => _graphState[week][day] = newVal
 
   let inputUserInfo = (email, username, offset) => {
-    _graphState.email = email
-    _graphState.username = username
-    _graphState.yearOffset = offset.value
+    _graphState.email = [email]
+    _graphState.username = [username]
+    _graphState.yearOffset = [offset.value]
   }
 
   return {
