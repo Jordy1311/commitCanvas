@@ -27,42 +27,42 @@ server.get("/", (req, res) => {
 })
 
 server.post("/", async (request, response) => {
-  let generateDate = offset => {
-    let date = moment("2020-01-05T09").utc()
-    if (offset > 0) {
-      date.add(offset, "days")
   //// STEP 1 - PROCESS REQUEST BODY INTO VARIABLES
   const userEmail = request.body.email[0]
   const userUsername = request.body.username[0]
   const userYearOffset = request.body.yearOffset[0]
 
+  let generateDate = dayOfYearIndex => {
+    let date = moment(`${userYearOffset}`, "YYYY-MM-DD")
+    if (dayOfYearIndex > 0) {
+      date.add(dayOfYearIndex, "days")
     }
     return date.toString()
   }
 
   let getCommittedDays = graphState => {
-    let dayOffset = 0
+    let dayOfYearIndex = 0
     let committedDaysTempArray = {
       commitsRequired: false,
     }
 
     for ([weekName, daysArray] of Object.entries(graphState))  {
       daysArray.forEach(dayValue => {
-        dayOffset++
-        if (dayValue > 0) {
+        // > 0 makes sure commit && < 4 stops userYearOffset going into for loop
+        if (dayValue > 0 && dayValue <= 4) {
           committedDaysTempArray.commitsRequired = true
           if (committedDaysTempArray[weekName]) {
-            // for loop at dayValue.length
             for (i=0; i<dayValue; i++) {
-              committedDaysTempArray[weekName].push(generateDate(dayOffset))
+              committedDaysTempArray[weekName].push(generateDate(dayOfYearIndex))
             }
           } else {
             committedDaysTempArray[weekName] = []
             for (i=0; i<dayValue; i++) {
-              committedDaysTempArray[weekName].push(generateDate(dayOffset))
+              committedDaysTempArray[weekName].push(generateDate(dayOfYearIndex))
             }
           }
         }
+        dayOfYearIndex++
       })
     }
 
