@@ -31,6 +31,11 @@ server.post("/", async (request, response) => {
     let date = moment("2020-01-05T09").utc()
     if (offset > 0) {
       date.add(offset, "days")
+  //// STEP 1 - PROCESS REQUEST BODY INTO VARIABLES
+  const userEmail = request.body.email[0]
+  const userUsername = request.body.username[0]
+  const userYearOffset = request.body.yearOffset[0]
+
     }
     return date.toString()
   }
@@ -128,12 +133,12 @@ server.post("/", async (request, response) => {
     console.log("PROJECT ZIPPED!!")
   }
 
-  //// STEP 1 - PROCESS REQUEST BODY INTO VARIABLES
+  //// STEP 2 - GET COMMITTED DAYS IF COMMITS HAVE BEEN MADE
   let committedDays = getCommittedDays(request.body)
-  let userEmail = request.body.email[0]
-  let userUsername = request.body.username[0]
+  console.log(committedDays)
+  // console.log(request.body)
 
-  //// STEP 2 - PROCESSES COMMITTEDDAYS INTO PROJECT DIRECTORY/FILES
+  //// STEP 3 - PROCESSES COMMITTEDDAYS INTO PROJECT DIRECTORY/FILES
   
   if (committedDays.commitsRequired) {
     createProjectDirectory()
